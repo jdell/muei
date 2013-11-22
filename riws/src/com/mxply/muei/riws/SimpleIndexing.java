@@ -1,6 +1,8 @@
 package com.mxply.muei.riws;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -20,14 +22,112 @@ import org.apache.lucene.util.Version;
 
 
 public class SimpleIndexing implements IModule {
+	
+	
+	public class WorkingSet
+	{
+		final String ITAGS[] = {".I", ".T", ".A", ".B", ".W"};
 
+		int currentToken = -1;
+		int prevToken = -1;
+		
+		public Boolean isToken(String line)
+		{	
+			Boolean res = false;
+			
+			for(int i=0; i<ITAGS.length; i++)
+			{
+				res = _isToken(line, i);
+				if (res) break;
+			}
+			return res;
+		}
+		private Boolean _isToken(String line, int i)
+		{
+			Boolean res = line.startsWith(ITAGS[i]);
+			if (res)
+			{
+				prevToken = currentToken;
+				currentToken = i;
+			}
+			return res;
+		}
+		private Boolean isFirstToken(String value)
+		{
+			return _isToken(value, 0);
+		}
+		/*
+		public String extractValue(String line)
+		{
+			
+		}*/
+		
+		StringBuilder sb = new StringBuilder();
+		
+		public void resetValue()
+		{
+			sb = new StringBuilder();
+		}
+		public void storeValue(String line)
+		{
+			sb.append(line);
+		}
+	}
+	
+	
+	//private Boolean isTocken
+	
 	@Override
 	public void run(String[] params) {
-		String ifolder = params[0];
-		String ofolder = params[1];
+		String ipath = params[0];
+		String opath = params[1];
 
+	
 		
+try
+{
+	File ifolder = new File(ipath);
+	if (ifolder.exists())
+	{
+		WorkingSet ws = new WorkingSet();
 		
+		File[] files = ifolder.listFiles();
+		
+		for (int i=0;i<files.length;i++)
+		{
+			File f = files[i];
+			if (f.isFile())
+			{
+				BufferedReader br = new BufferedReader(new FileReader(f));
+				String line = null;
+				while ((line = br.readLine()) != null) 
+				{
+					if (ws.isToken(line))
+					{
+						ws.resetValue();						
+						if (ws.isFirstToken(line))
+						{
+							
+						}
+						//System.out.println(line);
+					}
+					
+					ws.storeValue(line);
+					
+				}
+				br.close();
+			}
+		}
+	}
+	else
+	{
+		System.out.format("Directorio %s no encontrado. Directorio actual: %s", ipath, new File(".").getCanonicalPath());
+	}
+}catch(Exception ex)
+{
+	System.out.println("Describir excepcion");
+	ex.printStackTrace();
+}
 		
 		/*
 		
@@ -39,14 +139,12 @@ public class SimpleIndexing implements IModule {
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, new StandardAnalyzer(Version.LUCENE_40));
 		
 		IndexWriter writer = null;
-		*/
 		//-----------
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
 		
 		DirectoryReader ireader = null;
 		IndexSearcher isearcher = null;
 		QueryParser iparser = null;
-		String iFields[] = {"I", "T", "A", "B", "W"};
 		
 		/*
 		try{			
@@ -61,12 +159,9 @@ public class SimpleIndexing implements IModule {
 			//3.- write output
 			
 			//writer = new IndexWriter(FSDirectory.open(new File(indexFolder)), config);
-			String text = "testing";
 			
 			//IndexReader ts= IndexReader.open(directory);
-			
-			System.out.println("Test: " + text);
-			
+		
 			//ireader.close();			
 		}catch(CorruptIndexException ex)
 		{
