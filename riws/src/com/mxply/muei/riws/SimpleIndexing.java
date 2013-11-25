@@ -42,11 +42,11 @@ public class SimpleIndexing implements IModule {
 		if (values!=null)
 		{
 		  Document doc = new Document();
-		  doc.add(new IntField("ID", Integer.parseInt(values[0]), Store.YES));
-		  doc.add(new TextField("TITLE", values[1], Store.YES));
-		  doc.add(new TextField("AUTHOR", values[2], Store.YES));
-		  doc.add(new TextField("INSTITUTION", values[3], Store.YES));
-		  doc.add(new TextField("CONTENT", values[4], Store.YES));
+		  doc.add(new StringField("ID", values[0], null));
+		  doc.add(new TextField("TITLE", values[1].trim(), Store.YES));
+		  doc.add(new TextField("AUTHOR", values[2].trim(), Store.YES));
+		  doc.add(new TextField("INSTITUTION", values[3].trim(), Store.YES));
+		  doc.add(new TextField("CONTENT", values[4].trim(), Store.YES));
 		  w.addDocument(doc);
 		  res = true;
 		  
@@ -103,7 +103,7 @@ try
 						}
 						else{
 							if (currentIndex>-1)
-								values[currentIndex] += line;
+								values[currentIndex] += " " + line;
 						}
 					}
 				}
