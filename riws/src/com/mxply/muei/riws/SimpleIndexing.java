@@ -59,7 +59,7 @@ public class SimpleIndexing implements IModule {
 
 		if (params.length!=2)
 		{
-			System.out.println("Usage: java riws inputfolder outputfolder");
+			System.out.println("Usage: java riws 1 inputfolder outputfolder");
 			return;
 		}
 		

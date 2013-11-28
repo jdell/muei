@@ -99,7 +99,7 @@ public class SimpleSearching implements IModule{
 	public void run(String[] params) {
 		if (params.length<3)
 		{
-			System.out.println("Usage: java riws indexFolder outputfile field:term [field:term ...]");
+			System.out.println("Usage: java riws 2 indexFolder outputfile field:term [field:term ...]");
 			return;
 		}
 
@@ -109,7 +109,7 @@ public class SimpleSearching implements IModule{
 		{
 			if (!params[i].contains(":"))
 			{
-				System.out.println("Usage: java riws indexFolder field:term [field:term ...]");
+				System.out.println("Usage: java riws 2 indexFolder field:term [field:term ...]");
 				return;
 			}
 			String pair[] = params[i].split(":");
