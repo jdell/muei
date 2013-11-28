@@ -56,6 +56,13 @@ public class SimpleIndexing implements IModule {
 	
 	@Override
 	public void run(String[] params) {
+
+		if (params.length!=2)
+		{
+			System.out.println("Usage: java riws inputfolder outputfolder");
+			return;
+		}
+		
 		String ipath = params[0];
 		String opath = params[1];
 
@@ -83,6 +90,9 @@ public class SimpleIndexing implements IModule {
 						
 						int currentIndex = -1;
 						String values[] = new String[5];
+						for	(int v=0; v<values.length;v++)
+							values[v]="";
+						
 						int tagIndex = -1;
 						while ((line = br.readLine()) != null) 
 						{
@@ -98,7 +108,7 @@ public class SimpleIndexing implements IModule {
 											values[v]="";
 									}
 									currentIndex = tagIndex;							
-									values[currentIndex] = line.replaceFirst(startWith,  "").trim();
+									values[currentIndex] += line.replaceFirst(startWith,  "").trim();
 								}
 								else{
 									if (currentIndex>-1)
