@@ -158,11 +158,10 @@ public class SimpleSearching implements IModule{
 			addRoot(xmlDoc, processedItems, sbfilter.toString().trim(), excludedDocs.size());
 			
 			for (int i=0; i<atomicreader.maxDoc();i++)
-			{
-				org.apache.lucene.document.Document doc = atomicreader.document(i);
-				
+			{				
 				if (!excludedDocs.contains(i))
 				{
+					org.apache.lucene.document.Document doc = atomicreader.document(i);
 					addDocument(xmlDoc, doc.get("ID"), 
 							doc.get("TITLE"), 
 							doc.get("AUTHOR"), 
