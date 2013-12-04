@@ -35,7 +35,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-public class SimpleSearching implements IModule{
+public class SimpleReading implements IModule{
 
 	private int processedItems = 0;
 	
