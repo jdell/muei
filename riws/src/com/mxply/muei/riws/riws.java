@@ -7,6 +7,8 @@
  */
 package com.mxply.muei.riws;
 
+import com.mxply.muei.riws.commands.RIWSEngine;
+
 
 public class riws {
 
@@ -14,8 +16,9 @@ public class riws {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		RIWSEngine engine = new RIWSEngine();
+		engine.start();
+/*
 		if (args.length<1)
 		{
 			showTheWay();
@@ -33,6 +36,9 @@ public class riws {
 				module = new SimpleIndexing();
 			break;
 			case "2":
+				module = new SimpleReading();
+			break;
+			case "3":
 				module = new SimpleSearching();
 			break;
 			default:
@@ -40,13 +46,15 @@ public class riws {
 				return;
 		}		
 		module.run(params);
+		*/
 	}
 	private static void showTheWay()
 	{
 		System.out.println("Usage: java riws practiceID [params...]");
 		System.out.println("practiceID:");
 		System.out.println("1: Simple Indexing");
-		System.out.println("2: Simple Searching");
+		System.out.println("2: Simple Reading");
+		System.out.println("3: Simple Searching");
 		System.out.println("");
 	}
 
