@@ -16,6 +16,7 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -67,7 +68,7 @@ public class SearchingCommand extends Command{
 			}
 			
 			SearchBuilder sb = new SearchBuilder();
-			TopDocs topDocs = sb.search(idir, com.mxply.muei.riws.common.parser.join(params, " ", 2), top.get());
+			TopDocs topDocs = sb.search(idir, com.mxply.muei.riws.common.parser.join(params, " ", 2), top.get(), new DefaultSimilarity());
 			DirectoryReader reader = DirectoryReader.open(idir);
 			
 			int processedItems = Math.min(top.get(), topDocs.totalHits);

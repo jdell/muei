@@ -116,7 +116,7 @@ public class TrecCommand extends Command{
 		try {
 			String querystring = values[1];
 			log(String.format("Query: %s", querystring));
-			TopDocs topDocs = sb.search(idir, querystring, Integer.MAX_VALUE);
+			TopDocs topDocs = sb.search(idir, querystring, Integer.MAX_VALUE, new DefaultSimilarity());
 			for (int i = 0; i < topDocs.totalHits ; i++) {
 				Document doc = reader.document(topDocs.scoreDocs[i].doc);
 				//query-number q0 document-id rank score exp

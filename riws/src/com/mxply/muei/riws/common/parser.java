@@ -1,5 +1,7 @@
 package com.mxply.muei.riws.common;
 
+import java.util.List;
+
 public abstract class parser {
 	public static Boolean tryParseInt(String value, Mutable<Integer> output)  
 	{  
@@ -12,7 +14,11 @@ public abstract class parser {
 	          return false;  
 	      }  
 	}
-	
+
+	public static String join(List<String> r,String d, int index)
+	{
+		return join(r.toArray(new String[r.size()]),d, index);
+	}
 	public static String join(String r[],String d, int index)
 	{		  
 		if (r.length == 0 || index>r.length) return "";
