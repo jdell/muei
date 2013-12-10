@@ -21,7 +21,7 @@ public class TrecCommand extends Command{
 
 	@Override
 	public Boolean canExecute(String[] params) {
-		return params!=null && params.length==3;
+		return params!=null && params.length==2;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TrecCommand extends Command{
 
 	@Override
 	protected String getParams() {
-		return "indexFolder queryfile qrelfile";
+		return "indexFolder queryfile";
 	}
 
 	@Override
@@ -59,15 +59,6 @@ public class TrecCommand extends Command{
 				System.out.format("File not found [%s ]. Current folder: %s\n", querypath, new File(".").getCanonicalPath());
 				return;
 			}
-
-			String qrelpath = params[1];
-			File qrelfile = new File(qrelpath);
-			if (!qrelfile.exists() || !qrelfile.isFile())
-			{			
-				System.out.format("File not found [%s ]. Current folder: %s\n", qrelpath, new File(".").getCanonicalPath());
-				return;
-			}
-			
 
 			List<String> tags = Arrays.asList(".I", ".W");
 			BufferedReader br = new BufferedReader(new FileReader(queryfile));
