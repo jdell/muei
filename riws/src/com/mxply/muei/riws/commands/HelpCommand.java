@@ -2,6 +2,10 @@ package com.mxply.muei.riws.commands;
 
 public class HelpCommand extends Command {
 
+	public HelpCommand()
+	{
+		_mustwatch = false;
+	}
 	@Override
 	public Boolean canExecute(String[] params) {
 		return true;
@@ -20,9 +24,9 @@ public class HelpCommand extends Command {
 	@Override
 	protected void action(String[] params) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Command list:\n");
+		sb.append("**************** List of Commands **************** \n");
 		for(String p:params)
-			sb.append(String.format("%s\n", p));
+			sb.append(String.format("\n%s", p));
 		
 		System.out.println(sb.toString());
 		

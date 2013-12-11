@@ -33,11 +33,6 @@ public class ReadingCommand extends Command {
 
 	private int processedItems = 0;
 
-	private void printSummary()
-	{
-		System.out.format("Operation completed. %d items.\n", processedItems);
-	}
-
 	//Otra alternativa: 
 	//http://3kbzotas.wordpress.com/2011/08/01/creando-xml-en-java-de-la-forma-mas-facil-rapida-e-intuitiva/
 	
@@ -177,7 +172,8 @@ public class ReadingCommand extends Command {
 			idir.close();
 			
 			generateXML(xmlDoc, opath);
-			printSummary();
+			
+			System.out.format("%d item%s processed.\n", processedItems, processedItems==1?"":"s");
 			
 		}catch(CorruptIndexException ex)
 		{

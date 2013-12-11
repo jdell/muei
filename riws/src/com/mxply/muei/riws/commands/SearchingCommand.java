@@ -78,8 +78,8 @@ public class SearchingCommand extends Command{
 			}
 			reader.close();
 			idir.close();
-			
-			System.out.format("Operation completed. %d items.\n", processedItems);			
+
+			System.out.format("%d item%s processed.\n", processedItems, processedItems==1?"":"s");		
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

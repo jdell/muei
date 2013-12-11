@@ -126,9 +126,9 @@ public class MapCommand extends Command {
 					strb.append(String.format("Q%s\t:\t%f\tDocs:\t{%s}\n", querynumber, apq, com.mxply.muei.riws.common.parser.join(qrels.get(querynumber), ", ", 0)));
 				}
 				//3.4 calc map
-				map = ap / qrels.size();
+				map = ap / queries.size();
 				//3.5 print map					
-				log(String.format("Model:%20s\tMap: %f", similarity.toString(), map));
+				log(String.format("Model:%20s\tMAP: %f", similarity.toString(), map));
 				log(strb.toString(), false);
 				strb = new StringBuilder();
 				
@@ -136,6 +136,7 @@ public class MapCommand extends Command {
 				dir.close();
 			}
 			logcommit();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

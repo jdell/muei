@@ -41,7 +41,7 @@ public class IndexingCommand extends Command {
 				IndexBuilder ib = new IndexBuilder();
 				ib.build(ifile.getPath(), new DefaultSimilarity(), opath);
 				
-				System.out.format("Operation completed. %d items.\n", ib.getProcessedItems());
+				System.out.format("%d item%s processed.\n", ib.getProcessedItems(), ib.getProcessedItems()==1?"":"s");
 			}
 			else
 			{

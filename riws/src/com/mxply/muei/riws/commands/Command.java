@@ -5,11 +5,15 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import com.mxply.muei.riws.common.TimeWatch;
 
 public abstract class Command {
 
 	private String _logfile = null;
 	private StringBuilder _sb = new StringBuilder();
+	protected Boolean _mustwatch = true;
 	protected void log(String message)
 	{
 		log(message, true);
@@ -40,7 +44,17 @@ public abstract class Command {
 		_logfile = String.format("%s-%s.log",  getKey(), new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS").format(new Date()));
 		if (canExecute(params))
 		{
-			action(params);
+			TimeWatch watch = TimeWatch.start(); 
+			try {
+				action(params);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			finally
+			{
+				if (_mustwatch)
+					System.out.format("Elapsed time: %d ms\n", watch.time(TimeUnit.MILLISECONDS));
+			}
 		}
 		else
 		{
