@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -22,13 +23,14 @@ import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 
 import com.mxply.muei.riws.common.IndexBuilder;
+import com.mxply.muei.riws.common.Mutable;
 import com.mxply.muei.riws.common.SearchBuilder;
 
 public class MapCommand extends Command {
 
 	@Override
 	public Boolean canExecute(String[] params) {
-		return params!=null && params.length==3;
+		return params!=null && params.length>=3 && params.length<=4;
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class MapCommand extends Command {
 
 	@Override
 	protected String getParams() {
-		return "collectionfile queryfile qrelfile";
+		return "collectionfile queryfile qrelfile [querynumber]";
 	}
 
 	@Override
@@ -70,7 +72,6 @@ public class MapCommand extends Command {
 				return;
 			}
 			
-			
 			//1.- read qrel
 			Hashtable<String, List<String>> qrels = getQRels(qrelfile);
 			
@@ -92,7 +93,7 @@ public class MapCommand extends Command {
 			similarities.add(new LMDirichletSimilarity(500));
 			similarities.add(new LMDirichletSimilarity(1000));
 			similarities.add(new LMDirichletSimilarity(2000));
-			similarities.add(new LMDirichletSimilarity(2500));
+			//similarities.add(new LMDirichletSimilarity(2500));
 			similarities.add(new LMDirichletSimilarity(5000));
 			
 			float map, apq, ap;
@@ -105,6 +106,16 @@ public class MapCommand extends Command {
 			StringBuilder strb = null;
 			List<String> precisionPerDoc = null;
 			Hashtable<String, List<Point>> graphqueries = null;
+			
+			String querynumberToDraw = Long.toString((new Date()).getTime() % (queries.size() + 1));
+			if (params.length==4)
+			{
+				Mutable<Integer> m = new Mutable<Integer>();
+				if (com.mxply.muei.riws.common.parser.tryParseInt(params[3], m))
+					querynumberToDraw = m.get().toString();
+			}
+			Hashtable<String, List<Point>> similaritiesToDraw = new Hashtable<String, List<Point>>();
+			
 			for (Similarity similarity : similarities) {
 				//3.1 index
 				dir = ib.build(collectionfile.getPath(), similarity);
@@ -133,11 +144,21 @@ public class MapCommand extends Command {
 							hit++;
 							apq+= (float)hit/(hit+missed);
 							precisionPerDoc.add(String.format("%s:%f",doc.get("ID"), (float)hit/(hit+missed)));
+						
+							
+							if (querynumber.equals(querynumberToDraw))
+							{
+								if (!similaritiesToDraw.containsKey(similarity.toString()))
+									similaritiesToDraw.put(similarity.toString(), new ArrayList<MapCommand.Point>());
+								
+								similaritiesToDraw.get(similarity.toString()).add(new Point((double)hit/qrels.get(querynumber).size(), (double)hit/(hit+missed)));
+							}
+							
+							graphqueries.get(querynumber).add(new Point((double)hit/qrels.get(querynumber).size(), (double)hit/(hit+missed)));
 						}
 						else
 							missed++;
 						
-						graphqueries.get(querynumber).add(new Point((double)hit/qrels.get(querynumber).size(), (double)hit/(hit+missed)));
 						
 						if (hit==qrels.get(querynumber).size())
 							break;
@@ -159,6 +180,7 @@ public class MapCommand extends Command {
 				dir.close();
 			}
 			logcommit();
+			DrawPRGraph(querynumberToDraw, similaritiesToDraw);
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -232,6 +254,56 @@ public class MapCommand extends Command {
 			ex.printStackTrace();
 		}		
 	}
+	
+	private void DrawPRGraph(String querynumber, Hashtable<String, List<Point>> similarities)
+	{
+		try {
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<html><head>");
+			sb.append("<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>");
+			sb.append("<script type=\"text/javascript\">");
+			sb.append("google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});");
+			sb.append("google.setOnLoadCallback(drawChart);");
+			sb.append("function drawChart() {");
+			
+			sb.append(String.format("var data%s = google.visualization.arrayToDataTable([", querynumber));
+			sb.append("['Recall' ");
+			for (String key : similarities.keySet())
+				sb.append(String.format(",'%s'", key));
+			sb.append("],");
+	
+			for (String firstkey : similarities.keySet()) {
+				for (int i = 0; i < similarities.get(firstkey).size(); i++) {
+					sb.append(String.format("%s[%f, ", i!=0?",":"", similarities.get(firstkey).get(i).getX()));
+					for (String key : similarities.keySet()) {
+						sb.append(String.format("%s%f", !firstkey.equals(key)?",":"", similarities.get(key).get(i).getY()));
+					}
+					sb.append(String.format("]"));
+				}
+				break;
+			}
+			
+			sb.append("]);");
+			sb.append(String.format("new google.visualization.LineChart(document.getElementById('chart_div%1$s')).draw(data%1$s, {title: 'Precision-Recall Graph - Q%1$s',vAxis: {title: 'Precision', titleTextStyle: {color: 'blue'}}, hAxis: {title: 'Recall', titleTextStyle: {color: 'red'}}});", querynumber));
+		
+			sb.append("}</script></head><body>");
+			
+			sb.append(String.format("<div id=\"chart_div%s\" style=\"width: 900px; height: 500px;\"></div>", querynumber));
+			
+			sb.append("</body></html>");
+			
+			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(encodeFilename(String.format("%s_Q%s", _logfile, querynumber )) + ".html", true)));
+			out.println(sb.toString());
+			out.close();
+			
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}		
+	}
+	
 	private String encodeFilename(String rawfilename) throws Exception
 	{
 		//return URLEncoder.encode(rawfilename, "UTF-8");
