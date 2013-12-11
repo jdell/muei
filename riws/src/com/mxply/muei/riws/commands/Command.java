@@ -11,7 +11,7 @@ import com.mxply.muei.riws.common.TimeWatch;
 
 public abstract class Command {
 
-	private String _logfile = null;
+	protected String _logfile = null;
 	private StringBuilder _sb = new StringBuilder();
 	protected Boolean _mustwatch = true;
 	protected void log(String message)

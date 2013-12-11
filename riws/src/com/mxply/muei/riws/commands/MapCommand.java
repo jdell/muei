@@ -1,10 +1,15 @@
 package com.mxply.muei.riws.commands;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -75,12 +80,19 @@ public class MapCommand extends Command {
 			//3.- loop
 			List<Similarity> similarities = new ArrayList<Similarity>();
 			similarities.add(new DefaultSimilarity());
+			//similarities.add(new LMDirichletSimilarity(0));
+			//similarities.add(new LMDirichletSimilarity(1));
+			//similarities.add(new LMDirichletSimilarity(2));
+			//similarities.add(new LMDirichletSimilarity(5));
 			similarities.add(new LMDirichletSimilarity(10));
+			//similarities.add(new LMDirichletSimilarity(20));
+			//similarities.add(new LMDirichletSimilarity(50));
 			similarities.add(new LMDirichletSimilarity(100));
 			similarities.add(new LMDirichletSimilarity(200));
 			similarities.add(new LMDirichletSimilarity(500));
 			similarities.add(new LMDirichletSimilarity(1000));
 			similarities.add(new LMDirichletSimilarity(2000));
+			similarities.add(new LMDirichletSimilarity(2500));
 			similarities.add(new LMDirichletSimilarity(5000));
 			
 			float map, apq, ap;
@@ -91,14 +103,18 @@ public class MapCommand extends Command {
 			Directory dir = null;
 			TopDocs topDocs = null;
 			StringBuilder strb = null;
+			List<String> precisionPerDoc = null;
+			Hashtable<String, List<Point>> graphqueries = null;
 			for (Similarity similarity : similarities) {
 				//3.1 index
 				dir = ib.build(collectionfile.getPath(), similarity);
 				DirectoryReader reader = DirectoryReader.open(dir);
 				ap = 0;
 				strb = new StringBuilder();
+				graphqueries = new Hashtable<String, List<Point>>();
 				for (int i = 0; i < queries.size(); i++) {
 					querynumber = Integer.toString(i+1);
+					graphqueries.put(querynumber, new ArrayList<MapCommand.Point>());
 					if (!qrels.containsKey(querynumber))
 						continue;
 										
@@ -106,6 +122,7 @@ public class MapCommand extends Command {
 					topDocs = sb.search(dir, queries.get(i), Integer.MAX_VALUE, similarity);
 					
 					//3.3 compare qrel
+					precisionPerDoc = new ArrayList<String>();
 					hit = 0;
 					missed = 0;
 					apq = 0;
@@ -115,21 +132,27 @@ public class MapCommand extends Command {
 						{
 							hit++;
 							apq+= (float)hit/(hit+missed);
+							precisionPerDoc.add(String.format("%s:%f",doc.get("ID"), (float)hit/(hit+missed)));
 						}
 						else
 							missed++;
 						
+						graphqueries.get(querynumber).add(new Point((double)hit/qrels.get(querynumber).size(), (double)hit/(hit+missed)));
+						
 						if (hit==qrels.get(querynumber).size())
 							break;
 					}	
+					apq = hit==0?(float)0:apq/hit;
 					ap += apq;
-					strb.append(String.format("Q%s\t:\t%f\tDocs:\t{%s}\n", querynumber, apq, com.mxply.muei.riws.common.parser.join(qrels.get(querynumber), ", ", 0)));
+					//strb.append(String.format("Q%s\t:\t%f\tHits/Total:\t%d/%d\tDocs:\t{%s}\n", querynumber, apq, hit, (hit+missed), com.mxply.muei.riws.common.parser.join(qrels.get(querynumber), ", ", 0)));
+					strb.append(String.format("Q%s\t:\t%f\tRelevant/Hits/Total:\t%4d %4d %4d\tRecall:%f\tDocs:\t{%s}\n", querynumber, apq, qrels.get(querynumber).size(), hit, (hit+missed), (float)hit/qrels.get(querynumber).size(), com.mxply.muei.riws.common.parser.join(precisionPerDoc, ", ", 0)));
 				}
 				//3.4 calc map
 				map = ap / queries.size();
 				//3.5 print map					
 				log(String.format("Model:%20s\tMAP: %f", similarity.toString(), map));
 				log(strb.toString(), false);
+				DrawPRGraph(similarity, graphqueries);
 				strb = new StringBuilder();
 				
 				reader.close();
@@ -142,20 +165,95 @@ public class MapCommand extends Command {
 		}
 		
 	}
+	private class Point
+	{
+		double x;
+		double y;
+		
+		public double getX() {
+			return x;
+		}
+
+		public double getY() {
+			return y;
+		}
+
+		public Point(double x, double y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+	}
+	private void DrawPRGraph(Similarity similarity, Hashtable<String, List<Point>> queries)
+	{
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("<html><head>");
+			sb.append("<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>");
+			sb.append("<script type=\"text/javascript\">");
+			sb.append("google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});");
+			sb.append("google.setOnLoadCallback(drawChart);");
+			sb.append("function drawChart() {");
+			
+			StringBuilder divs = new StringBuilder();
+			List<String> sortedList = new ArrayList<String>(queries.keySet());
+			//Collections.sort(sortedList);
+			Collections.sort(sortedList, new Comparator<String>() {
+			    public int compare(String o2, String o1) {
+			        Integer i1 = Integer.parseInt(o1);
+			        Integer i2 = Integer.parseInt(o2);
+			        return (i1 > i2 ? -1 : (i1 == i2 ? 0 : 1));
+			    }
+			});
+			for (String key : sortedList) {
+				sb.append(String.format("var data%s = google.visualization.arrayToDataTable([", key));
+				sb.append("['Recall', 'Precision'],");
+				for (int i = 0; i < queries.get(key).size(); i++) {
+					Point p = queries.get(key).get(i);
+					sb.append(String.format("%s[%f,  %f]", i!=0?",":"", p.getX(), p.getY()));
+				}
+				sb.append("]);");
+				sb.append(String.format("new google.visualization.LineChart(document.getElementById('chart_div%1$s')).draw(data%1$s, {title: 'Precision-Recall Graph - Q%1$s',vAxis: {title: 'Precision', titleTextStyle: {color: 'blue'}}, hAxis: {title: 'Recall', titleTextStyle: {color: 'red'}}});", key));
+				
+				divs.append(String.format("<div id=\"chart_div%s\" style=\"width: 900px; height: 500px;\"></div>", key));
+			}
+			sb.append("}</script></head><body>");
+			
+			sb.append(divs.toString());
+			
+			sb.append("</body></html>");
+			
+			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(encodeFilename(String.format("%s_%s", _logfile, similarity.toString() )) + ".html", true)));
+			out.println(sb.toString());
+			out.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}		
+	}
+	private String encodeFilename(String rawfilename) throws Exception
+	{
+		//return URLEncoder.encode(rawfilename, "UTF-8");
+		for (char c : "(). ".toCharArray()) 
+			rawfilename = rawfilename.replace(c, '_');
+		
+		return rawfilename;
+	}
 	private Hashtable<String, List<String>> getQRels(File qrelfile)
 	{
 		Hashtable<String, List<String>> qrels = new Hashtable<String, List<String>>();
 		try {
 
 			BufferedReader br = new BufferedReader(new FileReader(qrelfile));
-			String line = null, querynumber=null, docid=null, rel=null;
+			String line = null, querynumber=null, docid=null;
 			String parts[] = null;
 			while ((line = br.readLine()) != null) 
 			{
 				parts = line.split(" ");
 				querynumber = parts[0];
 				docid = parts[1];
-				rel = parts[2];
+				//rel = parts[2];
 				if (!qrels.containsKey(querynumber))
 					qrels.put(querynumber, new ArrayList<String>());
 				if (!qrels.get(querynumber).contains(docid))

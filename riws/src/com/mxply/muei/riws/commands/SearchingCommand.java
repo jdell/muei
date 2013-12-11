@@ -9,19 +9,13 @@ package com.mxply.muei.riws.commands;
 
 import java.io.File;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
-import com.mxply.muei.riws.common.Mutable;
 import com.mxply.muei.riws.common.SearchBuilder;
 import com.mxply.muei.riws.common.parser;
 

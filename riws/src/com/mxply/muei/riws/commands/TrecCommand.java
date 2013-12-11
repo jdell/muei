@@ -3,7 +3,6 @@ package com.mxply.muei.riws.commands;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import com.mxply.muei.riws.common.IndexBuilder;
 import com.mxply.muei.riws.common.SearchBuilder;
 
 public class TrecCommand extends Command{
@@ -63,7 +61,6 @@ public class TrecCommand extends Command{
 			List<String> tags = Arrays.asList(".I", ".W");
 			BufferedReader br = new BufferedReader(new FileReader(queryfile));
 			String line = null;
-			String querystring = null;
 			
 			String values[] = new String[2];
 			for	(int v=0; v<values.length;v++)
@@ -73,7 +70,6 @@ public class TrecCommand extends Command{
 			int currentIndex = -1;
 			int tagIndex = -1;
 			int querynumber = 1;
-			TopDocs topDocs = null;
 			DirectoryReader reader = DirectoryReader.open(idir);
 			while ((line = br.readLine()) != null) 
 			{
