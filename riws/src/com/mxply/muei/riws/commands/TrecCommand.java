@@ -1,3 +1,10 @@
+/* 
+ * ***********************************************************
+ * MUEI - RIWS - Practice 03.2: TREC printing method using Lucene 
+ * Author: W. Joel Castro Reynoso
+ * Email: joemismito(at)gmail.com
+ * ***********************************************************   
+ */
 package com.mxply.muei.riws.commands;
 
 import java.io.BufferedReader;

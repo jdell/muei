@@ -21,6 +21,7 @@ public class RIWSEngine extends Command {
 		_commands.add(new SearchingCommand());
 		_commands.add(new TrecCommand());
 		_commands.add(new MapCommand());
+		_commands.add(new RatingCommand());
 		_commands.add(new ClearCommand());
 		_commands.add(_helpCommand);
 		_commands.add(this);				

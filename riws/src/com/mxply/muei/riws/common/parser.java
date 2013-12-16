@@ -14,6 +14,17 @@ public abstract class parser {
 	          return false;  
 	      }  
 	}
+	public static Boolean tryParseDouble(String value, Mutable<Double> output)  
+	{  
+	     try  
+	     {  
+	         output.set(Double.parseDouble(value));  
+	         return true;  
+	      } catch(NumberFormatException nfe)  
+	      {  
+	          return false;  
+	      }  
+	}
 
 	public static String join(List<String> r,String d, int index)
 	{
