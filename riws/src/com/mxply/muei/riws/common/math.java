@@ -52,7 +52,7 @@ public abstract class math {
 		
 		return transpose;
 	}
-	public static double calcAverage(double[] ratings) {
+	public static double calcAverage(double[] ratings){
 		  double sum = 0;
 		  if (ratings.length!=0) {
 			  int count = 0;
@@ -62,9 +62,11 @@ public abstract class math {
 				  {
 					  sum+=ratings[i];
 					  count++;
+					  //System.out.printf("%s\n", ratings[i]);
 				  }
 			  }
 			}
+			  //System.out.printf("%s / %s = %s\n", sum, count, sum/count);
 		    return count!=0? sum / count:0;
 		  }
 		  return sum;

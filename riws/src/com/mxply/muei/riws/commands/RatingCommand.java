@@ -87,7 +87,6 @@ public class RatingCommand extends Command {
                 algorithms.add(new KNNAlgorithm(sim, kNN,true));
 			}
             
-            //algorithms.add(new KNNAlgorithm(new PearsonCorrSimilarity()));
             for (CFAlgorithm cf : algorithms) {
                 cf.process(ratings_training, ratings_test);
                 log(String.format("%s\t-\tMAE:\t%.3f\t-\tRMSE:\t%.3f", cf.toString(), cf.getMAE(), cf.getRMSE()));

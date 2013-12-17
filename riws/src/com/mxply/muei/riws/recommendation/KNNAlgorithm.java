@@ -44,9 +44,9 @@ public class KNNAlgorithm extends CFAlgorithm {
 				similarities[u][v] = sim.get(training[u], training[v]);
 			}
         }
-        //math.print(similarities);
+        //
         for (int u = 0; u < test.length; u++) {
-			for (int i = 0; i < test.length; i++) {
+			for (int i = 0; i < test[u].length; i++) {
 				if (test[u][i]!=0)
 				{
 					prediction = 0;
