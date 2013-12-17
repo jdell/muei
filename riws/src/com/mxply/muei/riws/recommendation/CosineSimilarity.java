@@ -15,6 +15,7 @@ public class CosineSimilarity extends SimilarityFunction
         double magnitude1 = 0.0;
         double magnitude2 = 0.0;
         double similarity = 0.0;
+        double magnitude = 0;
 
         for (int i = 0; i < u.length; i++)
         {
@@ -23,11 +24,10 @@ public class CosineSimilarity extends SimilarityFunction
             magnitude2 += Math.pow(v[i], 2); 
         }
 
-        magnitude1 = Math.sqrt(magnitude1);
-        magnitude2 = Math.sqrt(magnitude2);
-
-        if (magnitude1 != 0.0 && magnitude2 != 0.0) {
-        	similarity = product / (magnitude1 * magnitude2);
+        magnitude = Math.sqrt(magnitude1 * magnitude2);
+        
+        if (magnitude != 0.0) {
+        	similarity = product / magnitude;
         } else {
         	similarity= 0.0;
         }

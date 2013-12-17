@@ -55,10 +55,17 @@ public abstract class math {
 	public static double calcAverage(double[] ratings) {
 		  double sum = 0;
 		  if (ratings.length!=0) {
+			  int count = 0;
 			  for (int i = 0; i < ratings.length; i++) {
-				sum+=ratings[i];
+			  {
+				  if (ratings[i]!=0)
+				  {
+					  sum+=ratings[i];
+					  count++;
+				  }
+			  }
 			}
-		    return sum / ratings.length;
+		    return count!=0? sum / count:0;
 		  }
 		  return sum;
 		}
