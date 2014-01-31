@@ -2,6 +2,7 @@ package com.mxply.muei.apm;
 
 import com.mxply.muei.apm.pr0.Dash0Activity;
 import com.mxply.muei.apm.pr1.Dash1Activity;
+import com.mxply.muei.apm.pr1.Dash1SettingsActivity;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -33,6 +35,22 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
+	 @Override
+		public boolean onOptionsItemSelected(MenuItem item){
+		 	boolean res = true;
+			switch (item.getItemId())
+			{
+				case R.id.action_about:
+					Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+					startActivity(intent);
+					break;
+				default:
+					res =super.onOptionsItemSelected(item);
+			}
+		   return res;
+		   
+		}
 
 	//**************
 	public enum tButton

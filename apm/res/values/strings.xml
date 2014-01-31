@@ -3,12 +3,22 @@
 
     <string name="app_name">apm</string>
     <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
     <string name="btn_practice">Practice</string>
     <string name="message_under_construction">Under Construction</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">DisplayMessageActivity</string>
-    <string name="title_activity_dash1">Dash1Activity</string>
-    <string name="title_activity_dash0">Dash0Activity</string>
+    <string name="title_activity_dash1">PR1</string>
+    <string name="title_activity_dash0">PR0</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_dash1_settings">User preferences</string>
+    <string name="pref_form_title">Test form</string>
+    <string name="pref_checkbox">4G Use</string>
+    <string name="pref_checkbox_summ">CheckBox Test</string>
+    <string name="pref_edittext">Name</string>
+    <string name="pref_edittext_summ">EditText Test</string>
+    <string name="pref_list">Province</string>
+    <string name="pref_list_summ">List Test</string>
+    <string name="title_activity_about">About</string>
 
 </resources>

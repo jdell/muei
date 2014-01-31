@@ -35,6 +35,18 @@
             android:name="com.mxply.muei.apm.pr0.Dash0Activity"
             android:label="@string/title_activity_dash0" >
         </activity>
+        <activity
+            android:name="com.mxply.muei.apm.pr1.Dash1SettingsActivity"
+            android:label="@string/title_activity_dash1_settings" >
+        </activity>
+        <activity
+            android:name="com.mxply.muei.apm.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.mxply.muei.apm.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

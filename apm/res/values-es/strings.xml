@@ -2,6 +2,24 @@
 <resources>
 
     <string name="app_name">apm</string>
-    <string name="action_settings">Preferencias</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_about">Acerca de</string>
+    <string name="btn_practice">Practica</string>
+    <string name="message_under_construction">En Construcción</string>
+    <string name="title_activity_main">Main</string>
+    <string name="title_activity_display_message">DisplayMessageActivity</string>
+    <string name="title_activity_dash1">PR1</string>
+    <string name="title_activity_dash0">PR0</string>
+    <string name="hello_world">Hola Mundo!</string>
+    <string name="title_activity_dash1_settings">Preferencias de Usuario</string>
+    
+    <string name="pref_form_title">Formulario de prueba</string>
+    <string name="pref_checkbox">Uso de 4G</string>
+    <string name="pref_checkbox_summ">Prueba de CheckBox</string>
+    <string name="pref_edittext">Nombre</string>
+    <string name="pref_edittext_summ">Prueba de EditText</string>
+    <string name="pref_list">Provincia</string>
+    <string name="pref_list_summ">Prueba de List</string>
+    <string name="title_activity_about">Acerca De</string>
 
 </resources>
