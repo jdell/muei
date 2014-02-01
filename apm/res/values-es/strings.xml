@@ -22,4 +22,7 @@
     <string name="pref_list_summ">Prueba de List</string>
     <string name="title_activity_about">Acerca De</string>
 
+    <string name="author">Autor</string>
+    <string name="email">Email</string>
+    <string name="sourcecode">Codigo</string>
 </resources>
