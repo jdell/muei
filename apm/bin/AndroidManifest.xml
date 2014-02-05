@@ -24,8 +24,7 @@
         </activity>
         <activity
             android:name="com.mxply.muei.apm.pr0.DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:theme="@android:style/Theme.Holo" >
+            android:label="@string/title_activity_display_message" >
         </activity>
         <activity
             android:name="com.mxply.muei.apm.pr1.Dash1Activity"
@@ -46,6 +45,10 @@
         <activity
             android:name="com.mxply.muei.apm.AboutActivity"
             android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name="com.mxply.muei.apm.pr2.Dash2Activity"
+            android:label="@string/title_activity_dash2" >
         </activity>
     </application>
 

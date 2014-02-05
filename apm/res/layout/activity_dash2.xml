@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Dash2Activity" >
+
+    <LinearLayout android:orientation="horizontal" android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="160dp"
+        android:text="Conectar" />
+    
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="160dp"
+        android:text="Desconectar" />
+
+        
+    </LinearLayout>    
+
+    <TextView
+        android:id="@+id/txtAcelerometro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acelerometro" />
+
+    <TextView 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:text="Giroscopio" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:text="Magnetometro" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

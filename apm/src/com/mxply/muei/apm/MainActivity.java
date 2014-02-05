@@ -3,6 +3,7 @@ package com.mxply.muei.apm;
 import com.mxply.muei.apm.pr0.Dash0Activity;
 import com.mxply.muei.apm.pr1.Dash1Activity;
 import com.mxply.muei.apm.pr1.Dash1SettingsActivity;
+import com.mxply.muei.apm.pr2.Dash2Activity;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -55,8 +56,9 @@ public class MainActivity extends Activity {
 	//**************
 	public enum tButton
 	{
-		PR01(0, Dash0Activity.class, false),
-		PR02(1, Dash1Activity.class);
+		PR00(0, Dash0Activity.class, false),
+		PR01(1, Dash1Activity.class),
+		PR02(2, Dash2Activity.class);
 
 	    private final int id;
 	    private final boolean enabled;

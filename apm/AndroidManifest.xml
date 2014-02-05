@@ -46,6 +46,10 @@
             android:name="com.mxply.muei.apm.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name="com.mxply.muei.apm.pr2.Dash2Activity"
+            android:label="@string/title_activity_dash2" >
+        </activity>
     </application>
 
 </manifest>

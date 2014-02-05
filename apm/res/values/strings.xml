@@ -20,9 +20,9 @@
     <string name="pref_list">Province</string>
     <string name="pref_list_summ">List Test</string>
     <string name="title_activity_about">About</string>
-
     <string name="author">Author</string>
     <string name="email">E-mail</string>
     <string name="sourcecode">Source</string>
-    
+    <string name="title_activity_dash2">Dash2Activity</string>
+
 </resources>
