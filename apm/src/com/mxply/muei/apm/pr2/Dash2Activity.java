@@ -1,7 +1,7 @@
 /*
  * MUEI - APM - 2013/2014
  * Autores: 
- * 		Angel Rico Diaz ()
+ * 		Angel Rico Diaz (angel.rico@udc.es)
  * 		W. Joel Castro (wilton.castro@udc.es) 
  * */
 package com.mxply.muei.apm.pr2;
