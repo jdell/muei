@@ -28,6 +28,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +43,6 @@ public class Dash2Activity extends Activity {
 	private Sensor sGiroscopio;
 	private Sensor sMagnetometro;
 
-	public Dash2Activity(){
-		
-		
-		/*
-			*/					
-	}
 	private SensorEventListener listener = new SensorEventListener() {
 		
 		@Override
@@ -58,14 +53,14 @@ public class Dash2Activity extends Activity {
 			DecimalFormat dformat = new DecimalFormat("#0.00");
 			TextView txt = null;
 
-			/*
+			
 			sb.append(dformat.format(event.values[0]));
 			sb.append(" - ");
 			sb.append(dformat.format(event.values[1]));
 			sb.append(" - ");
 			sb.append(dformat.format(event.values[2]));
-			*/
-			sb.append("TESTING");
+			
+			//sb.append("TESTING");
 			switch(type)
 			{
 			case Sensor.TYPE_ACCELEROMETER:
@@ -101,28 +96,71 @@ public class Dash2Activity extends Activity {
 		setContentView(R.layout.activity_dash2);
 
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+		
+		StringBuilder sb = new StringBuilder();
+		for (Sensor sensor : mSensorManager.getSensorList(Sensor.TYPE_ALL)) {
+			sb.append(" - ").append(sensor.getName()).append('\n');
+		}
+		TextView txt = (TextView)findViewById(R.id.txtSensores);
+		txt.setText(sb.toString());
 
 		PackageManager PM= this.getPackageManager();
-		sAcelerometro = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER))?
-				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-				:null;
-		sGiroscopio = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_GYROSCOPE))?
-						mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-						:null;
-						
-		sMagnetometro = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS))?
-								mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-								:null;
-								
+		sAcelerometro = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER))?mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER):null;
+		sGiroscopio = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_GYROSCOPE))?mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE):null;				
+		sMagnetometro = (PM.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS))?mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD):null;
 
+		Button btn = (Button)findViewById(R.id.btnConnect);
+		btn.setOnClickListener(new View.OnClickListener()
+		{
+		    public void onClick(View v)
+		    {	
+		    	connect();		    
+		    }
+		});
+		btn = (Button)findViewById(R.id.btnDisconnect);
+		btn.setOnClickListener(new View.OnClickListener()
+		{
+		    public void onClick(View v)
+		    {	
+	    		disconnect();			    		    
+		    }
+		});
 	}
+	private void switchButtonStatus()
+	{
+		isConnected = !isConnected;
+		
+		Button btnConnect = (Button)findViewById(R.id.btnConnect);
+		Button btnDisconnect = (Button)findViewById(R.id.btnDisconnect);
 
+		btnConnect.setEnabled(!isConnected);
+		btnDisconnect.setEnabled(isConnected);
+	}
+private void connect()
+{
+	if (!isConnected)
+	{				
+		if (sAcelerometro!=null) mSensorManager.registerListener(listener, sAcelerometro, SensorManager.SENSOR_DELAY_NORMAL);
+		if (sMagnetometro!=null) mSensorManager.registerListener(listener, sMagnetometro, SensorManager.SENSOR_DELAY_NORMAL);
+		if (sGiroscopio!=null) mSensorManager.registerListener(listener, sGiroscopio, SensorManager.SENSOR_DELAY_NORMAL);
+
+		switchButtonStatus();
+	}
+}
+private void disconnect()
+{
+	if (isConnected)
+	{	
+		mSensorManager.unregisterListener(listener);	
+
+		switchButtonStatus();
+	}
+}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-
-		onConnect();
+		connect();
 	}
 	
 	@Override
@@ -130,41 +168,17 @@ public class Dash2Activity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 
-		onDisconnect();
+		disconnect();
 	}
 	
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-		onDisconnect();
+		disconnect();
 		
 		super.onStop();
 	}
-	public void onConnect()
-	{
-		if (isConnected)
-			return;
-		
-		isConnected = !isConnected;
-		
 
-		if (sAcelerometro!=null) mSensorManager.registerListener(listener, sAcelerometro, SensorManager.SENSOR_DELAY_NORMAL);
-		if (sMagnetometro!=null) mSensorManager.registerListener(listener, sMagnetometro, SensorManager.SENSOR_DELAY_NORMAL);
-		if (sGiroscopio!=null) mSensorManager.registerListener(listener, sGiroscopio, SensorManager.SENSOR_DELAY_NORMAL);
-		
-	}
-	public void onDisconnect()
-	{
-		if (!isConnected)
-			return;
-		
-		
-		isConnected = !isConnected;
-	
-
-	mSensorManager.unregisterListener(listener);	
-		
-	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
