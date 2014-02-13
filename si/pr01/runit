@@ -1,0 +1,2 @@
+gcc -o proc.out proc.c
+./proc.out < statements.txt
