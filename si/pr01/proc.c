@@ -7,7 +7,9 @@
 *
 */
  
+
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_LETTERS 30
 #define MAX_FILE_LENGTH 50000
@@ -17,26 +19,42 @@
 int vocabulary[MAX_LETTERS];
 int statements[MAX_STATEMENTS][STATEMENT_LENGTH];
 char file[MAX_FILE_LENGTH];
-char *current_statement, *next_statement;
+char *current_statement;
 char *current_letter;
+
+char *delimiters = "<-,.";
+char statement_delimiter = '\n';
+
+char *scan(char **pp, char c)
+{
+    char *s = *pp, *p;
+
+    p = strchr(*pp, c);
+    if (p) *p++ = '\0';
+    *pp = p;
+    return s;
+}
 
 void main()
 {
 	int readbytes = read(0, file, MAX_FILE_LENGTH)>0;
 	if (readbytes)
 	{
-		printf("%s\n", file);
-		current_statement = strtok(file, ".\n");
-		int i =  0;
-		while(current_statement!=NULL)
-		{
-			//next_statement = strtok(NULL, ".");
+		char *p = file;
+		int i = 0;
+ 		while (p) {
+        		current_statement = scan(&p, statement_delimiter);
+			if (strcmp(current_statement, "")==0) return;
+
 			i++;
 			printf("%d - %s\n", i, current_statement);
-
-			current_statement = strtok(NULL, ".\n");
+			current_letter = strtok(current_statement, delimiters);
+			while(current_letter!=NULL)
+			{
+				printf("\tletter: %s\n", current_letter);
+				current_letter = strtok(NULL, delimiters);
+			}
 		}
 	}
 	printf("\n");
 }
-
