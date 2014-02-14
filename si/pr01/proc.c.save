@@ -56,7 +56,7 @@ void main()
 			index_letter = 0;
 			for(current_letter = strtok(current_statement, delimiters); current_letter!=NULL; current_letter = strtok(NULL, delimiters))
 			{
-				statements[index_statement][index_letter] = *current_letter - 'a' + 1;
+				statements[index_statement][index_letter] = *current_letter - 'a';
 				index_letter++;
 
 				printf("\tletter: %s\n", current_letter);
@@ -67,14 +67,15 @@ void main()
 		int iteration = 0;
 		for (iteration = 0; iteration<MAX_ITERATIONS; iteration++)
 		{
-			//Execution
 			int res;
+			
 			for (i=0; i<index_statement; i++)
 			{
+				current_statement = statements[i];
 				res = 1;
 				for (j=1; j<STATEMENT_LENGTH; j++)
 				{
-					index_letter = statements[i][j];
+					index_letter = current_statement[j];
 					if  (index_letter==0) break;
 					if (vocabulary[index_letter]!=1)
 					{
@@ -82,16 +83,12 @@ void main()
 						break;
 					}
 				}
-				index_letter = statements[i][0];
+				index_letter = current_statement[0];
 				vocabulary[index_letter] = res;
-
-				//for(j=1; j<MAX_LETTERS; j++)
-				//	printf("%d", vocabulary[j]);
-				//printf("\n");
 			}
 
 			//Print
-			for (i=1; i<MAX_LETTERS; i++)
+			for (i=0; i<MAX_LETTERS; i++)
 		   		printf("%d", vocabulary[i]);
 
 			printf("\n");
