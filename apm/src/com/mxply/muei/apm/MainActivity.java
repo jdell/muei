@@ -4,6 +4,8 @@ import com.mxply.muei.apm.pr0.Dash0Activity;
 import com.mxply.muei.apm.pr1.Dash1Activity;
 import com.mxply.muei.apm.pr1.Dash1SettingsActivity;
 import com.mxply.muei.apm.pr2.Dash2Activity;
+import com.mxply.muei.apm.pr3.Dash3Activity;
+import com.mxply.muei.apm.pr4.Dash4Activity;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -58,7 +60,9 @@ public class MainActivity extends Activity {
 	{
 		PR00(0, Dash0Activity.class, false),
 		PR01(1, Dash1Activity.class),
-		PR02(2, Dash2Activity.class);
+		PR02(2, Dash2Activity.class),
+		PR03(3, Dash3Activity.class),
+		PR04(4, Dash4Activity.class);
 
 	    private final int id;
 	    private final boolean enabled;
@@ -75,6 +79,8 @@ public class MainActivity extends Activity {
 		String name = (String)getResources().getText(R.string.btn_practice);
 		LinearLayout mainlayout = (LinearLayout) findViewById(R.id.main_layout);
 		for (tButton b : tButton.values()) {
+			if (!b.isEnabled()) continue;
+			
 			Button btn = new Button(this);
 			btn.setId(b.getValue());
 			btn.setText(name + " " + b.getValue());

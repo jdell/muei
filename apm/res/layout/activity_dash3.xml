@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical"
+    android:padding="5dip">
+    
+
+        <RadioGroup
+            android:id="@+id/rbgMethod"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            
+            	<RadioButton
+            	    android:id="@+id/rbDirecta"
+            	   	android:layout_width="0dp"
+        			android:layout_weight="1"
+            	    android:layout_height="wrap_content"
+            	    android:text="Directa" 
+            	    android:checked="true"/>	
+            	    
+            	<RadioButton
+            	    android:id="@+id/rbInversa"
+            	    android:layout_width="0dp"
+        			android:layout_weight="1"
+            	    android:layout_height="wrap_content"
+            	    android:text="Inversa" />
+        </RadioGroup>
+			<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+			    <EditText
+			        android:id="@+id/txtDirecta"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content" />
+
+			    <TextView
+			        android:id="@+id/txtInversa"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Google Play Services" />
+
+			</RelativeLayout>
+      <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:text="Update"/>
+      
+        </LinearLayout>
+        
+        
+            	
+			<LinearLayout
+			    android:layout_marginTop="10dip"
+			    android:orientation="vertical"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content" >
+            	    
+            	<TextView
+            	    android:id="@+id/txtResultsLavel"
+            	    android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+            	    android:text="Resultados"
+                	android:layout_gravity="center|center_vertical"
+            	    android:textAlignment="center"/>
+            	    
+			     <View
+			        android:layout_height="2dip"
+			        android:background="#CCCCCC" android:layout_width="match_parent" />
+				<LinearLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:orientation="horizontal" >
+
+	            	<TextView
+	            	    android:id="@+id/txtResultMethod"
+	            	    android:layout_width="0dp"
+	            	    android:layout_height="fill_parent"
+	            	    android:text="Metodo"
+                		android:layout_weight="1"
+	                	android:layout_gravity="center|center_vertical"
+	            	    android:textAlignment="center"/>
+	            	<TextView
+	            	    android:id="@+id/txtResultLatitude"
+	            	    android:layout_width="0dp"
+	            	    android:layout_height="fill_parent"
+	            	    android:text="Latitud"
+                		android:layout_weight="1"
+	                	android:layout_gravity="center|center_vertical"
+	            	    android:textAlignment="center"/>
+	            	<TextView
+	            	    android:id="@+id/txtResultLongitude"
+	            	    android:layout_width="0dp"
+	            	    android:layout_height="fill_parent"
+	            	    android:text="Longitud"
+                		android:layout_weight="1"
+	                	android:layout_gravity="center|center_vertical"
+	            	    android:textAlignment="center"/>
+				</LinearLayout>
+				
+			</LinearLayout>
+				<ListView android:id="@+id/lvResults" android:layout_width="match_parent" android:layout_height="wrap_content">
+				    
+				</ListView>
+    </LinearLayout>

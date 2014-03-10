@@ -8,6 +8,12 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -49,6 +55,14 @@
         <activity
             android:name="com.mxply.muei.apm.pr2.Dash2Activity"
             android:label="@string/title_activity_dash2" >
+        </activity>
+        <activity
+            android:name="com.mxply.muei.apm.pr3.Dash3Activity"
+            android:label="@string/title_activity_dash3" >
+        </activity>
+        <activity
+            android:name="com.mxply.muei.apm.pr4.Dash4Activity"
+            android:label="@string/title_activity_dash4" >
         </activity>
     </application>
 

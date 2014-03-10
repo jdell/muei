@@ -1,19 +1,12 @@
 package com.mxply.muei.apm.pr1;
 
-import com.mxply.muei.apm.MainActivity;
 import com.mxply.muei.apm.R;
-import com.mxply.muei.apm.R.layout;
-import com.mxply.muei.apm.R.menu;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class Dash1Activity extends Activity {
 
