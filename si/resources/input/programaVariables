@@ -1,0 +1,5 @@
+persona(pedro).
+persona(juan).
+padre(X,Y) <- persona(X), persona(Y), hijo(Y,X).
+hijo(pedro,juan).
+persona(pepe).
