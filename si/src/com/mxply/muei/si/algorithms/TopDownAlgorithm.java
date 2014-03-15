@@ -53,5 +53,6 @@ public class TopDownAlgorithm  extends Algorithm{
         for (Variable variable : program.getVariables()) {
             result.addAll(eval(variable, result, new HashSet<Variable>(), 0));
         }
+        this.result = result;
 	}
 }

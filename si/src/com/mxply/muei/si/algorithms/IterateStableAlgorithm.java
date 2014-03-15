@@ -1,5 +1,6 @@
 package com.mxply.muei.si.algorithms;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,7 +18,7 @@ public class IterateStableAlgorithm extends Algorithm{
         Set<Variable> actual = new TreeSet<>();
 
         do {
-
+        	System.out.println(Arrays.toString(actual.toArray()));
             previous.addAll(actual);
 
             for (Sentence sentence : program.getSentences()) {
@@ -28,5 +29,6 @@ public class IterateStableAlgorithm extends Algorithm{
             }
 
         } while (!previous.containsAll(actual));
+        result = actual;
 	}
 }

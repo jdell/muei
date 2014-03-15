@@ -21,7 +21,7 @@ public abstract class Algorithm {
 	{
 		this.program = program;
 		System.out.printf("**********************************\n");
-		System.out.printf("Algoritmo: %\n", getName());
+		System.out.printf("Algoritmo: %s\n", getName());
 		System.out.printf("**********************************\n");
 		action();
 		print();

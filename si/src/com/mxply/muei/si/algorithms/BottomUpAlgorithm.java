@@ -64,7 +64,7 @@ public class BottomUpAlgorithm extends Algorithm {
 
         } while (!program.isEmpty() && !previous.containsAll(result));
 
-		
+		this.result = result;
 	}
 
 }

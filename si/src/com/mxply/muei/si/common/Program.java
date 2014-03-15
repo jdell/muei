@@ -21,16 +21,27 @@ public class Program {
     private final Set<String> variableNames = new TreeSet<>();
     private final Set<String> variableValues = new TreeSet<>();
 
+    private File file=null;
+    
     private Program() {
+    }
+    
+    public String getPath()
+    {
+    	return file!=null?file.getAbsolutePath():"";
     }
 
     public static Program loadFrom(File file)
     {
     	Program res = new Program();
-    	res.load(file);
+    	res.file = file;
+    	res.load(res.file);
     	return res;
     }
-    
+    public void print()
+    {
+    	//TODO: print
+    }
     private void load(File file) {
     	//TODO:
         System.out.println("Programa");
