@@ -33,7 +33,7 @@ public class LoadCommand extends Command  {
 				return;
 			}
 			
-			String ipath = params[0];
+			String ipath = Environment.Current().getFullPath(params[0]);
 
 			File ifile = new File(ipath);
 			if (ifile.exists() && ifile.isFile())

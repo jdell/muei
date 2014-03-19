@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 
+import com.mxply.muei.si.Environment;
+
 public class Program {
 
     private final Set<Variable> variables = new TreeSet<>();
@@ -28,7 +30,7 @@ public class Program {
     
     public String getPath()
     {
-    	return file!=null?file.getAbsolutePath():"";
+    	return file!=null?file.getName():"";
     }
 
     public static Program loadFrom(File file)
@@ -43,9 +45,7 @@ public class Program {
     	//TODO: print
     }
     private void load(File file) {
-    	//TODO:
-        System.out.println("Programa");
-
+    	
         try (Scanner scanner = new Scanner(file)) {
 
             while (scanner.hasNextLine()) {
@@ -90,7 +90,7 @@ public class Program {
                     if (!variable.variables.isEmpty()) {
                         for (Map<String, String> combination : combinations) {
                             Sentence newSentence = nonVariableSentence(sentence, combination);
-                            newSentences.add(newSentence);
+                            	newSentences.add(newSentence);
                         }
                         toDeleteSentences.add(sentence);
                         break;
@@ -103,7 +103,6 @@ public class Program {
 
         }
 
-        System.out.println("Programa cargado");
     }
 
     private Sentence nonVariableSentence(Sentence sentence, Map<String, String> combination) {
@@ -140,7 +139,8 @@ public class Program {
 
     private void add(Sentence sentence) {
 
-        System.out.println(sentence);
+        //if (sentence.toString().startsWith("a(1,3,4)<-d(1,0),a(0,3,3),i(3,4),n(1),n(3),n(4),n(0),n(3)"))
+        	System.out.println(sentence);
 
         sentences.add(sentence);
 

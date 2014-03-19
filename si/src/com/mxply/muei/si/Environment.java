@@ -8,6 +8,7 @@ public class Environment{
 	{
 		 directory = ".";
 	}	
+	public static String preguntaTopDown = "";//"a(1,3,";
 	public static Environment Current()
 	{
 		if (_instance==null)
@@ -25,7 +26,10 @@ public class Environment{
 	{
 		this.directory = v;
 	}
-	
+	public String getFullPath(String filename)
+	{
+		return  Environment.Current().getDirectory() + "/" + filename;
+	}
 	private Program program;
 	public Program getProgram()
 	{

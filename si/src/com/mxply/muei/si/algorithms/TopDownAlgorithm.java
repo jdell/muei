@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.mxply.muei.si.Environment;
 import com.mxply.muei.si.common.*;
 
 public class TopDownAlgorithm  extends Algorithm{
@@ -18,13 +19,13 @@ public class TopDownAlgorithm  extends Algorithm{
 
         deep++;
 
-        //TODO: Print
-        System.out.println("Variable " + var);
+    	//if (var.toString().contains(Environment.preguntaTopDown))
+    		System.out.println("Evaluando variable: " + var);
 
         evaluatedVariables.add(var);
 
         for (Sentence sentence : program.getSentences(var)) {
-
+       	
             if (sentence.eval(result)) {
                 result.add(sentence.ls);
             } else {
@@ -40,8 +41,9 @@ public class TopDownAlgorithm  extends Algorithm{
                 }
 
             }
-
         }
+    	//if (var.toString().contains(Environment.preguntaTopDown))
+    		print(result, "Resultado variable " + var);
 
         return result;
     }
@@ -51,7 +53,10 @@ public class TopDownAlgorithm  extends Algorithm{
         Set<Variable> result = new TreeSet<>();
 
         for (Variable variable : program.getVariables()) {
-            result.addAll(eval(variable, result, new HashSet<Variable>(), 0));
+            //result.addAll(eval(variable, result, new HashSet<Variable>(), 0));
+        	if (variable.toString().contains(Environment.preguntaTopDown))
+        		//result.addAll(eval(variable, new TreeSet<Variable>(), new HashSet<Variable>(), 0));
+            	result.addAll(eval(variable, result, new HashSet<Variable>(), 0));
         }
         this.result = result;
 	}

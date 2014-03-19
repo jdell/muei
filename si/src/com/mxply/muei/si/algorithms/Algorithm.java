@@ -1,7 +1,10 @@
 package com.mxply.muei.si.algorithms;
 
+import java.util.Collection;
 import java.util.Set;
+import java.util.TreeSet;
 
+import com.mxply.muei.si.Environment;
 import com.mxply.muei.si.common.*;
 
 public abstract class Algorithm {
@@ -30,10 +33,22 @@ public abstract class Algorithm {
 	protected abstract void action();
 	protected void print()
 	{
-        print(result);
+		System.out.print("Resultado final: [");
+		for (Variable v : result) {
+	    	if (v.toString().contains(Environment.preguntaTopDown))
+	    		System.out.print(v.toString());
+		}
+		System.out.println("]");
+        //print(result, "Resultado final");
 	}
-	protected void print(Set<Variable> r)
+	protected void print(Collection<Variable> r, String txt)
 	{
-        System.out.printf("Resultado: %s\n", r);
+		if (r==null) return;
+        System.out.printf("%s: %s\n",txt, r);
+	}
+	protected void print(Set<Variable> r, String txt)
+	{
+		if (r==null) return;
+        System.out.printf("%s: %s\n",txt, r);
 	}
 }

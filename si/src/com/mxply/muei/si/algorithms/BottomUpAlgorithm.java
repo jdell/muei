@@ -20,8 +20,7 @@ public class BottomUpAlgorithm extends Algorithm {
 
         Set<Variable> result = new TreeSet<>();
 
-        //TODO: Print
-        System.out.println("Asignaciones");
+        //System.out.println("Nodos atomicos");
 
         for (Iterator<Sentence> programIterator = program.getSentences().iterator(); programIterator.hasNext();) {
             Sentence sentence = programIterator.next();
@@ -30,14 +29,15 @@ public class BottomUpAlgorithm extends Algorithm {
                 programIterator.remove();
             }
         }
+        print(result, "Nodos atomicos");
 
         Collection<Variable> previous = null;
         do {
 
             previous = new ArrayList<>(result);
 
-            //TODO: Print
-            System.out.println("Variables previas");
+            //System.out.println("Resolucion dependencias");
+            print(result, "Resolucion dependencias");
 
             for (Iterator<Sentence> sentenceIt = program.getSentences().iterator(); sentenceIt.hasNext();) {
 
