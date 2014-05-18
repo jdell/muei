@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.mxply.muei.apm.R;
+import com.mxply.muei.apm.pr3.Dash3Activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,52 +37,20 @@ public class CameraFragment  extends Fragment {
 
 	private static final int ACTION_TAKE_PHOTO = 1;
 
-	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
-	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 	private ImageView mImageView;
-	private Bitmap mImageBitmap;
 
 	private String mCurrentPhotoPath;
 
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
 
-	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
-
 	
-	/* Photo album for this application */
-	private String getAlbumName() {
-		return getString(R.string.album_name);
-	}
-
-	private File getAlbumDir() {
-		File storageDir = null;
-
-		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			
-			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
-
-			if (storageDir != null) {
-				if (! storageDir.mkdirs()) {
-					if (! storageDir.exists()){
-						Log.d("CameraSample", "failed to create directory");
-						return null;
-					}
-				}
-			}
-			
-		} else {
-			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
-		}
-		
-		return storageDir;
-	}
 
 	private File createImageFile() throws IOException {
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-		File albumF = getAlbumDir();
+		File albumF = ((Dash4Activity)this.getActivity()).getAlbumDir();
 		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
 		return imageF;
 	}
@@ -185,8 +154,6 @@ public class CameraFragment  extends Fragment {
 
 			mImageView = (ImageView) rootView.findViewById(R.id.imageView1);
 
-			mImageBitmap = null;
-
 			Button picBtn = (Button) rootView.findViewById(R.id.btnIntend);
 			
 			setBtnListenerOrDisable( 
@@ -194,13 +161,7 @@ public class CameraFragment  extends Fragment {
 					mTakePicOnClickListener,
 					MediaStore.ACTION_IMAGE_CAPTURE
 			);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-				mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
-			} else {
-				mAlbumStorageDirFactory = new BaseAlbumDirFactory();
-			}
-			/*
-			*/
+			
 	        return rootView;
 	    }
 
@@ -208,7 +169,7 @@ public class CameraFragment  extends Fragment {
 		public void onActivityResult(int requestCode, int resultCode, Intent data) {
 			switch (requestCode) {
 				case ACTION_TAKE_PHOTO: {
-					if (resultCode ==this.getActivity().RESULT_OK) {
+					if (resultCode ==Activity.RESULT_OK) {
 						handleBigCameraPhoto();
 					}
 					break;

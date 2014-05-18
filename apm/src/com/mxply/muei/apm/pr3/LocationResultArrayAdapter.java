@@ -15,28 +15,47 @@ import com.mxply.muei.apm.pr3.LocationResult;
 public class LocationResultArrayAdapter extends ArrayAdapter<LocationResult> {
 	  private final Context context;
 	  private final ArrayList<LocationResult> values;
+      private static LayoutInflater inflater = null;
 
 	  public LocationResultArrayAdapter(Context context, ArrayList<LocationResult> values) {
 	    super(context, R.layout.pr3_fragment_list_row, values);
 	    this.context = context;
 	    this.values = values;
+
+	    inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	  }
 
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
-	    LayoutInflater inflater = (LayoutInflater) context
-	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    View rowView = inflater.inflate(R.layout.pr3_fragment_list_row, parent, false);
-	    TextView txtResultMethod = (TextView) rowView.findViewById(R.id.rowResultMethod);
-	    TextView txtResultLatitude = (TextView) rowView.findViewById(R.id.rowResultLatitude);
-	    TextView txtResultLongitude = (TextView) rowView.findViewById(R.id.rowResultLongitude);
-	    
+		ViewHolderItem viewHolder;
+		if(convertView==null){
+			convertView = inflater.inflate(R.layout.pr3_fragment_list_row, parent, false);
+
+		    viewHolder = new ViewHolderItem();
+		    viewHolder.txtResultAddress = (TextView) convertView.findViewById(R.id.rowResultAddress);
+		    viewHolder.txtResultMethod = (TextView) convertView.findViewById(R.id.rowResultMethod);
+		    viewHolder.txtResultLatitude = (TextView) convertView.findViewById(R.id.rowResultLatitude);
+		    viewHolder.txtResultLongitude = (TextView) convertView.findViewById(R.id.rowResultLongitude);
+		
+		    convertView.setTag(viewHolder);
+		
+		}else{
+		    viewHolder = (ViewHolderItem) convertView.getTag();
+		}
+			    
 	    LocationResult lr = values.get(position);
 
-	    txtResultMethod.setText(lr.getMethod());
-	    txtResultLatitude.setText(String.valueOf(lr.getLocation().getLatitude()));
-	    txtResultLongitude.setText(String.valueOf(lr.getLocation().getLongitude()));
+	    viewHolder.txtResultAddress.setText(lr.getAddress());
+	    viewHolder.txtResultMethod.setText(lr.getMethod());
+	    viewHolder.txtResultLatitude.setText(String.valueOf(lr.getLocation().getLatitude()));
+	    viewHolder.txtResultLongitude.setText(String.valueOf(lr.getLocation().getLongitude()));
 
-	    return rowView;
+	    return convertView;
 	  }
+		static class ViewHolderItem {
+		    TextView txtResultAddress;
+		    TextView txtResultMethod;
+		    TextView txtResultLatitude;
+		    TextView txtResultLongitude;
+		}
 	} 

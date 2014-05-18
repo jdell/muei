@@ -1,12 +1,18 @@
 package com.mxply.muei.apm.pr4;
+import java.io.File;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+
 import com.mxply.muei.apm.AboutActivity;
 import com.mxply.muei.apm.R;
 import com.mxply.muei.apm.pr2.Dash2Activity;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -14,18 +20,21 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 @SuppressLint("NewApi")
 public class Dash4Activity extends FragmentActivity implements ActionBar.TabListener {
 	
-	 private ViewPager viewPager;
+		private ViewPager viewPager;
 	    private TabsPagerAdapter mAdapter;
 	    private ActionBar actionBar;
 	    // Tab titles
 	    private String[] tabs = { "Cámara", "Galeria" };
-	    
+
+		private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
+		
 	    @Override
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -61,6 +70,13 @@ public class Dash4Activity extends FragmentActivity implements ActionBar.TabList
 	            public void onPageScrollStateChanged(int arg0) {
 	            }
 	        });
+	        
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+				mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
+			} else {
+				mAlbumStorageDirFactory = new BaseAlbumDirFactory();
+			}
 	    }
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,9 +134,6 @@ public class Dash4Activity extends FragmentActivity implements ActionBar.TabList
 	        case 1:
 	            // Games fragment activity
 	            return new GalleryFragment();
-	        case 2:
-	            // Movies fragment activity
-	            return new ImageFragment();
 	        }
 	 
 	        return null;
@@ -132,5 +145,33 @@ public class Dash4Activity extends FragmentActivity implements ActionBar.TabList
 	        return 2;
 	    }
 	 
+	}
+
+	/* Photo album for this application */
+	private String getAlbumName() {
+		return getString(R.string.album_name);
+	}
+
+	public File getAlbumDir() {
+		File storageDir = null;
+
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			
+			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
+
+			if (storageDir != null) {
+				if (! storageDir.mkdirs()) {
+					if (! storageDir.exists()){
+						Log.d("CameraSample", "failed to create directory");
+						return null;
+					}
+				}
+			}
+			
+		} else {
+			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+		}
+		
+		return storageDir;
 	}
 }
