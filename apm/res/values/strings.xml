@@ -78,5 +78,34 @@
     <string name="title_activity_gallery_image">GalleryImageActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    
+     <string name="pref_location_method">Geolocation method</string>
+    <string name="pref_location_method_summ">Reverse geolocation method</string>
+	<string name="pref_location_method_title">Select method</string>
 
+	
+    <!-- User interface labels and strings -->
+
+    <!-- Address format -->
+    <string name="address_output_string">%1$s %2$s %3$s</string>
+
+    <!-- Latitude, longitude format -->
+    <string name="latitude_longitude">%1$.8f, %2$.8f</string>
+
+    <!-- Labels -->
+    <string name="latlng">Lat/Long:</string>
+    <string name="address">Address:</string>
+    
+    <string name="get_location_alternative">Alternative Loc.</string>
+     <string name="get_address_alternative">Alternative Addr.</string>
+     <string name="get_intent_map">View Map</string>
+     
+    <string name="Share">Share</string>
+     
+      <string name="title_activity_preferences">Preferences</string>
+	
+	<string name="save_xml">Start XML</string>
+	<string name="not_save_xml">Stop XML</string>
+	<string name="open_contact">Open Contact</string>
+	 
 </resources>

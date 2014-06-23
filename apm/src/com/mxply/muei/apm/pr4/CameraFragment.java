@@ -177,27 +177,7 @@ public class CameraFragment  extends Fragment {
 
 			}
 		}
-/*
-		// Some lifecycle callbacks so that the image can survive orientation change
-		@Override
-		public void onSaveInstanceState(Bundle outState) {
-			outState.putParcelable(BITMAP_STORAGE_KEY, mImageBitmap);
-			outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY, (mImageBitmap != null) );
-			super.onSaveInstanceState(outState);
-		}
-
-				
-		@Override
-		protected void onRestoreInstanceState(Bundle savedInstanceState) {
-			super.onRestoreInstanceState(savedInstanceState);
-			mImageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
-			mImageView.setImageBitmap(mImageBitmap);
-			mImageView.setVisibility(
-					savedInstanceState.getBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY) ? 
-							ImageView.VISIBLE : ImageView.INVISIBLE
-			);
-		}
-*/
+		
 		/**
 		 * Indicates whether the specified action can be used as an intent. This
 		 * method queries the package manager for installed packages that can
@@ -234,3 +214,5 @@ public class CameraFragment  extends Fragment {
 			}
 		}
 }
+/*
+*/

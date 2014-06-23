@@ -12,4 +12,12 @@
 	    <item>3</item>
 	    <item>4</item>
 	</string-array>
+	    <string-array name="method">
+        <item>Geocoder</item>
+        <item>Http</item>
+    </string-array>	
+    <string-array name="cod_method">
+        <item>G</item>
+        <item>H</item>
+    </string-array>	
 </resources>

@@ -1,86 +1,207 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    >
+
+<TableLayout
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:orientation="vertical"
-    android:padding="5dip">
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
+
+    <TableRow>
+    	<TextView
+        android:id="@+id/text_connection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"      
+        android:text="@string/unknown"
+        android:textIsSelectable="true"       
+         />
+
+    <TextView
+        android:id="@+id/text_connection_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"       
+        android:text="@string/unknown"
+        android:textIsSelectable="true"
+        android:layout_marginLeft="10dp"/>
+        
+    </TableRow>
+    
+    	
+    <TableRow>
+        
+        <TextView
+        android:id="@+id/label_lat_lng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"      
+        android:text="@string/latlng"
+        android:layout_marginTop="10dp"              
+        android:textSize="20sp" />
+        
+    </TableRow>
+    
+    <TableRow>
+        <TextView
+        android:id="@+id/lat_lng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:layout_span="2"  
+        android:background="#fff"
+        android:textSize="20sp" />
+        
+    </TableRow>
+    
+	<TableRow >
+	    <TextView
+        android:id="@+id/label_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/address"
+        android:textSize="20sp" />
+	    
+	    <ProgressBar
+        android:id="@+id/address_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+	    
+	</TableRow>
+    
+	<TableRow >
+
     
 
-        <RadioGroup
-            android:id="@+id/rbgMethod"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textIsSelectable="true"
+        android:padding="5dp"
+        android:layout_span="2"  
+        android:background="#fff"/>
+	</TableRow>
+    
 
-            
-            	<RadioButton
-            	    android:id="@+id/rbDirecta"
-            	   	android:layout_width="0dp"
-        			android:layout_weight="1"
-            	    android:layout_height="wrap_content"
-            	    android:text="Directa" 
-            	    android:checked="true"/>	
-            	    
-            	<RadioButton
-            	    android:id="@+id/rbInversa"
-            	    android:layout_width="0dp"
-        			android:layout_weight="1"
-            	    android:layout_height="wrap_content"
-            	    android:text="Inversa" />
-        </RadioGroup>
-			<RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+	<TableRow>
+	    <Button
+        android:id="@+id/get_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"   
+        android:onClick="getLocation"
+        android:layout_marginTop="10dp"
+        android:text="@string/get_location" />
+	    
+	    <Button
+        android:id="@+id/get_address_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"   
+        android:onClick="getAddress"
+        android:text="@string/get_address" />
+	    
+	</TableRow>
+    
+	<TableRow>
+	     <Button
+        android:id="@+id/start_updates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:onClick="startUpdates"
+         android:layout_marginTop="10dp"
+        android:text="@string/start_updates" />
 
-			    <EditText
-			        android:id="@+id/txtDirecta"
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content" />
-
-			    <TextView
-			        android:id="@+id/txtInversa"
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:text="Google Play Services" />
-
-			</RelativeLayout>
-      <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnUpdate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_weight="1"
-                android:text="Update"/>
-      
-        </LinearLayout>
-        
-        
-            	
-			<LinearLayout
-			    android:layout_marginTop="10dip"
-			    android:orientation="vertical"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content" >
-            	    
-            	<TextView
-            	    android:id="@+id/txtResultsLavel"
-            	    android:layout_width="wrap_content"
-            	    android:layout_height="wrap_content"
-            	    android:text="Resultados"
-                	android:layout_gravity="center|center_vertical"
-            	    android:textAlignment="center"/>
-            	    
-			     <View
-			        android:layout_height="2dip"
-			        android:background="#CCCCCC" android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/stop_updates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp" 
+        android:onClick="stopUpdates"
+        android:text="@string/stop_updates" />
+	    
+	</TableRow>
 				
-			</LinearLayout>
-				<ListView android:id="@+id/lvResults" android:layout_width="match_parent" android:layout_height="wrap_content">
-				    
-				</ListView>
-    </LinearLayout>
+   
+	<TableRow>
+	    <EditText
+        android:id="@+id/editText_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#fff"
+        android:padding="5dp"
+        android:layout_span="2"
+         android:textSize="20sp"
+         />
+	</TableRow>
+	
+	<TableRow>	    
+	    <Button
+        android:id="@+id/get_location_alternative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_span="2"
+        android:onClick="getLocationAlternative"
+         android:text="@string/get_location_alternative" />
+	    
+	</TableRow>
+    
+<TableRow >
+    <Button
+        android:id="@+id/save_xml"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="10dp"
+        android:onClick="saveXml"
+        android:text="@string/save_xml" />
+    
+     <Button
+        android:id="@+id/not_save_xml"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="notSaveXml"
+        android:text="@string/not_save_xml" />
+    
+</TableRow>
+    
+  <TableRow>
+      <Button
+        android:id="@+id/get_intent_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"       
+        android:layout_marginTop="10dp"
+        android:onClick="getIntentMap"
+        android:text="@string/get_intent_map"
+      
+         />
+    
+    
+   
+     <Button
+        android:id="@+id/open_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:onClick="openContact"
+        android:text="@string/open_contact"
+        
+         />
+  </TableRow>  
+
+</TableLayout>
+</ScrollView>
