@@ -35,7 +35,7 @@
         android:description="@string/app_description"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.android.location.MainActivity"
+            android:name="es.udc.fic.muei.apm.geolocalizacion.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.example.android.location.ReceiveUpdatesIntentService"
+            android:name="es.udc.fic.muei.apm.geolocalizacion.ReceiveUpdatesIntentService"
             android:label="@string/app_name"
             android:exported="false"></service>
         

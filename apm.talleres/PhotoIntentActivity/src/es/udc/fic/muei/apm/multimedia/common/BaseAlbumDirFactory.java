@@ -1,4 +1,4 @@
-package com.example.android.photobyintent;
+package es.udc.fic.muei.apm.multimedia.common;
 
 import java.io.File;
 

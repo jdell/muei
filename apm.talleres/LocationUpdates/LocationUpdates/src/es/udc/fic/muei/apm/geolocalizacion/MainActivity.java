@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.example.android.location;
+package es.udc.fic.muei.apm.geolocalizacion;
 
 
+import com.example.android.location.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;

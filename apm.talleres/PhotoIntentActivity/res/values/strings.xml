@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">APM-PR04 - Multimedia</string>
-    
     <string name="hello">Hello World, PhotoIntentActivity!</string>
-    
     <string name="btnIntend">Take (big) Picture</string>
     <string name="btnIntendS">Take (small) Picture</string>
     <string name="btnIntendV">Take Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name">CameraSample</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Camera</string>
+    <string name="title_section2">Gallery</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
