@@ -22,7 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment { 
+/*
 
 	GalleryAdapter adapter =null; 
 	ArrayList<String> files = new ArrayList<String>();
@@ -81,4 +82,5 @@ public class GalleryFragment extends Fragment {
 			adapter.notifyDataSetChanged();
 		}
 	   }
+	   */
 }
