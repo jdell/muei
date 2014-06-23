@@ -4,17 +4,17 @@ import android.graphics.Bitmap;
 
 public class GalleryItem {
 	private Bitmap image;
-	private String title;
+	private String name;
 	private String date;
 	
 	public GalleryItem() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public GalleryItem(Bitmap image, String title,String date) {
+	public GalleryItem(Bitmap image, String name,String date) {
 		super();
 		this.setImage(image);
-		this.setTitle(title);
+		this.setName(name);
 		this.setDate(date);
 	}
 	/**
@@ -42,15 +42,15 @@ public class GalleryItem {
 		this.date = date;
 	}
 	/**
-	 * @return the title
+	 * @return the name
 	 */
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 	/**
-	 * @param title the title to set
+	 * @param name the name to set
 	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

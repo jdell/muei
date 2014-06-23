@@ -2,6 +2,6 @@ package es.udc.fic.muei.apm.multimedia.common;
 
 import java.io.File;
 
-abstract class AlbumStorageDirFactory {
+public abstract class AlbumStorageDirFactory {
 	public abstract File getAlbumStorageDir(String albumName);
 }

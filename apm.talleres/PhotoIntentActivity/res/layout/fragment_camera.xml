@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#84827e" >
+   <LinearLayout 
+   android:orientation="horizontal"
+   android:layout_height="wrap_content"
+   android:layout_width="match_parent"
+   android:padding="10dp"
+   >
+    <Button android:text="@string/btnIntend" android:id="@+id/btnIntend"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:background="#1ea2e1"       
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:padding="15dp"
+     />
+    
+
+  </LinearLayout>
+  <ImageView 
+      android:contentDescription="-Picture-"
+      android:layout_height="wrap_content" 
+      android:layout_width="wrap_content" 
+      android:visibility="visible"
+      android:id="@+id/imageView1" />
+</LinearLayout>
