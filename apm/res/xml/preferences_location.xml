@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<ListPreference 
+	    android:key="pref_location_method"
+	    android:title="@string/pref_location_method"
+	    android:summary="@string/pref_location_method_summ"
+	    android:dialogTitle="@string/pref_location_method_title"
+	    android:entries="@array/method"
+	    android:entryValues="@array/cod_method"
+	    />
+</PreferenceScreen>
