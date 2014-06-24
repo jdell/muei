@@ -54,14 +54,14 @@ public class GalleryAdapter extends ArrayAdapter<GalleryItem> {
     		LayoutInflater inflater = mContext.getLayoutInflater();
 
     		viewHolder = new ItemViewHolder();
-    		/*TODO> aqui viewHolder
-    		convertView = inflater.inflate(R.layout.element_gallery, null);
+    		//TODO> aqui viewHolder
+    		convertView = inflater.inflate(R.layout.galleryitem, null);
     		viewHolder.imgPicture = (ImageView) convertView.findViewById(R.id.imageView3);
     		viewHolder.txtName = (TextView) convertView.findViewById(R.id.textView3);
     		viewHolder.txtDate = (TextView) convertView.findViewById(R.id.textView4);
     		viewHolder.txtMap = (TextView) convertView.findViewById(R.id.textView5);
     		convertView.setTag(viewHolder);
-    		*/
+    		
     	}else{
     		viewHolder = (ItemViewHolder) convertView.getTag();
     	}
