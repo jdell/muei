@@ -3,14 +3,11 @@ package es.udc.fic.muei.apm.multimedia.common;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.google.android.gms.drive.internal.r;
-
 import es.udc.fic.muei.apm.multimedia.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,9 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
  
@@ -54,7 +48,6 @@ public class GalleryAdapter extends ArrayAdapter<GalleryItem> {
     		LayoutInflater inflater = mContext.getLayoutInflater();
 
     		viewHolder = new ItemViewHolder();
-    		//TODO> aqui viewHolder
     		convertView = inflater.inflate(R.layout.galleryitem, null);
     		viewHolder.imgPicture = (ImageView) convertView.findViewById(R.id.imageView3);
     		viewHolder.txtName = (TextView) convertView.findViewById(R.id.textView3);
@@ -89,7 +82,6 @@ public class GalleryAdapter extends ArrayAdapter<GalleryItem> {
     	        	}	
     	        	
     	        	 mPrefs = mContext.getSharedPreferences(PREFS_NAME,0);
-    	        	 ;
     	        	String location = mPrefs.getString(storageDir + "/" + this.getFilename(),"No location");    	        	
     	        	
     	        	String[] latlng_bloques = location.split(" - ");

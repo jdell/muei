@@ -3,7 +3,12 @@ package es.udc.fic.muei.apm.multimedia.fragments;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -59,7 +65,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
     private LocationClient mLocationClient;
     private String latLng = "";
     
-    public static final String PREFS_NAME = "multimedia_preferences";
+    public static final String PREFS_NAME = "MyPrefsFile";
     SharedPreferences mPrefs;    
     SharedPreferences.Editor mEditor;
     
@@ -375,5 +381,55 @@ GooglePlayServicesClient.OnConnectionFailedListener {
             
             mLocationClient.disconnect();
         }
+    }
+    
+    /*********/
+ // Method:
+    private Intent generateCustomChooserIntent(Intent prototype, String[] forbiddenChoices) {
+    	List<Intent> targetedShareIntents = new ArrayList<Intent>();
+    	List<HashMap<String, String>> intentMetaInfo = new ArrayList<HashMap<String, String>>();
+    	Intent chooserIntent;
+     
+    	Intent dummy = new Intent(prototype.getAction());
+    	dummy.setType(prototype.getType());
+    	List<ResolveInfo> resInfo = this.getActivity().getPackageManager().queryIntentActivities(dummy, 0);
+
+		CharSequence title  = null;
+    	if (!resInfo.isEmpty()) {
+    		for (ResolveInfo resolveInfo : resInfo) {
+    			if (resolveInfo.activityInfo == null || Arrays.asList(forbiddenChoices).contains(resolveInfo.activityInfo.packageName))
+    				continue;
+     
+    			HashMap<String, String> info = new HashMap<String, String>();
+    			info.put("packageName", resolveInfo.activityInfo.packageName);
+    			info.put("className", resolveInfo.activityInfo.name);
+    			info.put("simpleName", String.valueOf(resolveInfo.activityInfo.loadLabel(this.getActivity().getPackageManager())));
+    			intentMetaInfo.add(info);
+    		}
+     
+    		if (!intentMetaInfo.isEmpty()) {
+    			// sorting for nice readability
+    			Collections.sort(intentMetaInfo, new Comparator<HashMap<String, String>>() {
+    				@Override
+    				public int compare(HashMap<String, String> map, HashMap<String, String> map2) {
+    					return map.get("simpleName").compareTo(map2.get("simpleName"));
+    				}
+    			});
+     
+    			// create the custom intent list
+    			for (HashMap<String, String> metaInfo : intentMetaInfo) {
+    				Intent targetedShareIntent = (Intent) prototype.clone();
+    				targetedShareIntent.setPackage(metaInfo.get("packageName"));
+    				targetedShareIntent.setClassName(metaInfo.get("packageName"), metaInfo.get("className"));
+    				targetedShareIntents.add(targetedShareIntent);
+    			}
+     
+    			chooserIntent = Intent.createChooser(targetedShareIntents.remove(targetedShareIntents.size() - 1), title);
+    			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+    			return chooserIntent;
+    		}
+    	}
+     
+    	return Intent.createChooser(prototype, title);
     }
 }

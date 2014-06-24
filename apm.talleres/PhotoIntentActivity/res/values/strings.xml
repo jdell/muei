@@ -2,13 +2,12 @@
 <resources>
 
     <string name="app_name">APM-PR04 - Multimedia</string>
-    <string name="hello">Hello World, PhotoIntentActivity!</string>
     <string name="btnIntend">Take (big) Picture</string>
     <string name="btnIntendS">Take (small) Picture</string>
     <string name="btnIntendV">Take Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name">CameraSample</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">APM-PR04 - Multimedia</string>
     <string name="title_section1">Camera</string>
     <string name="title_section2">Gallery</string>
     <string name="app_tag">LocationUpdates</string>
@@ -61,7 +60,8 @@
     <string name="stop_updates">Stop Updates</string>
     <string name="unknown">--Unknown--</string>
     <string name="unknown_activity_request_code">        Received an unknown activity request code %1$d in onActivityResult.</string>
-    <string name="title_activity_full_screen">FullScreenActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_inmersive_fullscreen">Full Picture</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

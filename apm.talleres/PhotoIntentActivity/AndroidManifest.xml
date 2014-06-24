@@ -30,13 +30,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="es.udc.fic.muei.apm.multimedia.FullScreenActivity"
-            android:label="@string/title_activity_full_screen" android:immersive="true">
-        </activity>
+
         <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="es.udc.fic.muei.apm.multimedia.InmersiveFullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:immersive="true"
+            android:label="@string/title_activity_inmersive_fullscreen"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>

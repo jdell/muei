@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import es.udc.fic.muei.apm.multimedia.FullScreenActivity;
+import es.udc.fic.muei.apm.multimedia.InmersiveFullscreenActivity;
 import es.udc.fic.muei.apm.multimedia.R;
 import es.udc.fic.muei.apm.multimedia.common.*;
 import android.content.Context;
@@ -63,7 +63,7 @@ public class GalleryFragment extends Fragment {
     		public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
                    
-           	Intent intent = new Intent(rootView.getContext(), FullScreenActivity.class);
+           	Intent intent = new Intent(rootView.getContext(), InmersiveFullscreenActivity.class);
             	intent.putExtra("FILE_NAME",itemList.get(position).getName());
         		startActivity(intent);
  
@@ -93,7 +93,6 @@ public class GalleryFragment extends Fragment {
         	try {
         		itemList.clear();        
             	File[] files = getAlbumDir().listFiles();
-            	Integer[] mThumbIdsIntegers;
             	for (File f:files){
             		Date lastModDate = new Date(f.lastModified());
             		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
