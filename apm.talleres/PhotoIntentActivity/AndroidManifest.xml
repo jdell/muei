@@ -25,11 +25,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.media.action.IMAGE_CAPTURE"/>
-                <category android:name="android.intent.category.APP_GALLERY"/>
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="es.udc.fic.muei.apm.multimedia.FullScreenActivity"
+            android:label="@string/title_activity_full_screen" >
+        </activity>
+        <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

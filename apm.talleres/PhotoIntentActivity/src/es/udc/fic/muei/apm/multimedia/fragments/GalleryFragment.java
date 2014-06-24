@@ -3,12 +3,13 @@ package es.udc.fic.muei.apm.multimedia.fragments;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Date;
 
+import es.udc.fic.muei.apm.multimedia.FullScreenActivity;
 import es.udc.fic.muei.apm.multimedia.R;
 import es.udc.fic.muei.apm.multimedia.common.*;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 
 public class GalleryFragment extends Fragment {
 	private View rootView;
@@ -55,19 +58,18 @@ public class GalleryFragment extends Fragment {
     	}
      }
     public void refreshGallery(){
-    	/*TODO> FullScreen
-    	 gridview.setAdapter(new ImageAdapter(rootView.getContext(),R.layout.element_gallery,ellementGalleryList));// con setAdapter se llena
-         gridview.setOnItemClickListener(new OnItemClickListener() {
-             public void onItemClick(AdapterView<?> parent, View v,
-                     int position, long id) {
-                    
-            	Intent intent = new Intent(rootView.getContext(), FullScreenActivity.class);
-             	intent.putExtra("FILE_NAME",itemList.get(position).getName());
-         		startActivity(intent);
-  
-             }
-         });
-    */
+    	gridview.setAdapter(new GalleryAdapter(rootView.getContext(), R.layout.galleryitem, itemList));
+    	gridview.setOnItemClickListener(new OnItemClickListener(){
+    		public void onItemClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                   
+           	Intent intent = new Intent(rootView.getContext(), FullScreenActivity.class);
+            	intent.putExtra("FILE_NAME",itemList.get(position).getName());
+        		startActivity(intent);
+ 
+    		}
+    	});
+   
     }
 
     
