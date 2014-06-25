@@ -16,8 +16,6 @@
 
 package es.udc.fic.muei.apm.geolocalizacion;
 
-
-import com.example.android.location.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,10 +23,14 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
+import es.udc.fic.muei.apm.geolocalizacion.common.ContactsManager;
+import es.udc.fic.muei.apm.geolocalizacion.common.ContactsManager.onSelectedEmail;
+import es.udc.fic.muei.apm.geolocalizacion.common.LocationUtils;
 import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,15 +42,34 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ShareCompat;
 import android.util.Log;
+import android.util.Xml;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
+import java.util.prefs.Preferences;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlSerializer;
 
 /**
  * This the app's main Activity. It provides buttons for requesting the various features of the
@@ -68,6 +89,14 @@ public class MainActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+    
+    private ShareActionProvider mShareActionProvider;    
+    private Boolean saveXML = false;    
+    private Boolean startXML = false;     
+    private FileOutputStream fout = null;
+    private XmlSerializer serializer = null;    
+    private ContactsManager contacts;
+    
     // A request to connect to Location Services
     private LocationRequest mLocationRequest;
 
@@ -102,6 +131,9 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        contacts = new ContactsManager(this);
+        mEditAddress = (EditText) findViewById(R.id.editText_adress);
+        
         // Get handles to the UI view objects
         mLatLng = (TextView) findViewById(R.id.lat_lng);
         mAddress = (TextView) findViewById(R.id.address);
@@ -155,6 +187,8 @@ public class MainActivity extends FragmentActivity implements
         // After disconnect() is called, the client is considered "dead".
         mLocationClient.disconnect();
 
+        finXML();
+        
         super.onStop();
     }
     /*
@@ -168,6 +202,8 @@ public class MainActivity extends FragmentActivity implements
         mEditor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, mUpdatesRequested);
         mEditor.commit();
 
+        finXML();
+        
         super.onPause();
     }
 
@@ -215,6 +251,18 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
+    	contacts.onActivityResult(requestCode, resultCode, intent, new onSelectedEmail() {   
+            @Override
+            public void onSuccess(String address) {
+            	Toast.makeText(MainActivity.this, "Address: " + address, Toast.LENGTH_SHORT).show();
+            	mEditAddress.setText(address);
+            	setShareIntent(address);
+            }
+            
+            @Override
+            public void onFailure() {   
+            }
+       });
         // Choose what to do based on the request code
         switch (requestCode) {
 
@@ -315,26 +363,41 @@ public class MainActivity extends FragmentActivity implements
      */
     // For Eclipse with ADT, suppress warnings about Geocoder.isPresent()
     @SuppressLint("NewApi")
-    public void getAddress(View v) {
-
-        // In Gingerbread and later, use Geocoder.isPresent() to see if a geocoder is available.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && !Geocoder.isPresent()) {
-            // No geocoder is present. Issue an error message
-            Toast.makeText(this, R.string.no_geocoder_available, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (servicesConnected()) {
-
-            // Get the current location
-            Location currentLocation = mLocationClient.getLastLocation();
-
-            // Turn the indefinite activity indicator on
-            mActivityIndicator.setVisibility(View.VISIBLE);
-
-            // Start the background task
-            (new MainActivity.GetAddressTask(this)).execute(currentLocation);
-        }
+    public void getAddress(View v) {    	
+    	if(mPrefs.getString("pref_location_method","U").equals("H")){
+    		// If Google Play Services is available
+            if (servicesConnected()) {
+            	
+            	// Turn the indefinite activity indicator on
+                mActivityIndicator.setVisibility(View.VISIBLE);
+                
+            	 // Get the current location
+                Location currentLocation = mLocationClient.getLastLocation();
+                
+            	 // Start the background task
+                (new MainActivity.GetAddressAlternativeTask(this)).execute(currentLocation);                
+            }
+    		
+    	}else{
+	        // In Gingerbread and later, use Geocoder.isPresent() to see if a geocoder is available.
+	        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && !Geocoder.isPresent()) {
+	            // No geocoder is present. Issue an error message
+	            Toast.makeText(this, R.string.no_geocoder_available, Toast.LENGTH_LONG).show();
+	            return;
+	        }
+	
+	        if (servicesConnected()) {
+	
+	            // Get the current location
+	            Location currentLocation = mLocationClient.getLastLocation();
+	
+	            // Turn the indefinite activity indicator on
+	            mActivityIndicator.setVisibility(View.VISIBLE);
+	
+	            // Start the background task
+	            (new MainActivity.GetAddressTask(this)).execute(currentLocation);
+	        }
+    	}
     }
 
     /**
@@ -440,6 +503,8 @@ public class MainActivity extends FragmentActivity implements
 
         // In the UI, set the latitude and longitude to the value received
         mLatLng.setText(LocationUtils.getLatLng(this, location));
+
+        if (saveXML) updatesXML();
     }
 
     /**
@@ -583,6 +648,8 @@ public class MainActivity extends FragmentActivity implements
 
             // Set the address in the UI
             mAddress.setText(address);
+            
+            setShareIntent(address);
         }
     }
 
@@ -648,4 +715,319 @@ public class MainActivity extends FragmentActivity implements
             return mDialog;
         }
     }
+
+    /**
+     * An AsyncTask that calls .
+     * The class uses the following generic types:
+     * Location - A {@link android.location.Location} object containing the current location,
+     *            passed as the input parameter to doInBackground()
+     * Void     - indicates that progress units are not used by this subclass
+     * String   - An address passed to onPostExecute()
+     */
+    protected class GetAddressAlternativeTask extends AsyncTask<Location, Void, String> {
+
+        // Store the context passed to the AsyncTask when the system instantiates it.
+        Context localContext;
+
+        // Constructor called by the system to instantiate the task
+        public GetAddressAlternativeTask(Context context) {
+
+            // Required by the semantics of AsyncTask
+            super();
+
+            // Set a Context for the background task
+            localContext = context;
+        }
+
+        /**
+         * Get a geocoding service instance, pass latitude and longitude to it, format the returned
+         * address, and return the address to the UI thread.
+         */
+        @Override
+        protected String doInBackground(Location... params) {           
+        	try {
+        			      
+        		// Get the current location from the input parameter list
+                Location currentLocation = params[0];
+        		
+	        	StringBuilder sbURL = new StringBuilder();        	
+	        	sbURL.append("http://maps.google.com/maps/api/geocode/json?latlng=");
+	        	sbURL.append(currentLocation.getLatitude() + "," +currentLocation.getLongitude());
+	        	sbURL.append("&sensor=false");
+	        	
+	        	HttpGet httpGet = new HttpGet(sbURL.toString());
+	        	HttpClient client = new DefaultHttpClient();
+	        	HttpResponse response;
+	        	StringBuilder sbr = new StringBuilder();
+	        	
+	        	response = client.execute(httpGet);
+	        	HttpEntity entity = response.getEntity();
+	        	InputStream stream = entity.getContent();
+	        	int b;
+	        	while ((b = stream.read())!=-1) {
+					sbr.append((char) b);				
+				}
+	        	
+	        	JSONObject jsonObject = new JSONObject(sbr.toString());
+	        	
+	        	String name = new String(((JSONArray) jsonObject.get("results")).getJSONObject(0).getString("formatted_address").getBytes("ISO-8859-1"),"UTF-8");
+	        		        	
+	            // Display the current location in the UI
+	           return (name);	
+             
+
+             // Catch network or other I/O problems.
+            } catch (Exception exception) {
+
+                    // Log an error and return an error message
+                    Log.e(LocationUtils.APPTAG, exception.getMessage());
+
+                    // print the stack trace
+                    exception.printStackTrace();
+
+                    // Return an error message
+                    return (exception.getMessage());               
+             } 
+                
+        }
+        
+        /**
+         * A method that's called once doInBackground() completes. Set the text of the
+         * UI element that displays the address. This method runs on the UI thread.
+         */
+		@Override
+        protected void onPostExecute(String latLng) {
+        	
+        	// Turn off the progress bar
+            mActivityIndicator.setVisibility(View.GONE);
+            
+            // Set the address in the UI
+            mAddress.setText(latLng);
+            
+            setShareIntent(latLng);
+        }
+    }
+	public void getLocationAlternative(View v) {
+	    	 // Get text edit
+	    	String addr = mEditAddress.getText().toString();      
+	        
+	    	 // Start the background task
+	        (new MainActivity.GetLocationAlternativeTask(this)).execute(addr);
+	    }
+	    /**
+	     * An AsyncTask that calls .
+	     * The class uses the following generic types:
+	     * Location - A {@link android.location.Location} object containing the current location,
+	     *            passed as the input parameter to doInBackground()
+	     * Void     - indicates that progress units are not used by this subclass
+	     * String   - An address passed to onPostExecute()
+	     */
+	    protected class GetLocationAlternativeTask extends AsyncTask<String, Void, String> {
+
+	        // Store the context passed to the AsyncTask when the system instantiates it.
+	        Context localContext;
+
+	        // Constructor called by the system to instantiate the task
+	        public GetLocationAlternativeTask(Context context) {
+
+	            // Required by the semantics of AsyncTask
+	            super();
+
+	            // Set a Context for the background task
+	            localContext = context;
+	        }
+
+	        /**
+	         * Get a geocoding service instance, pass latitude and longitude to it, format the returned
+	         * address, and return the address to the UI thread.
+	         */
+	        @Override
+	        protected String doInBackground(String... params) {
+	           
+	        	try {
+	        			      
+	        		// Get the current location from the input parameter list
+	                String addr = params[0];
+	                addr= addr.replace("\n", "").replace(" ", "%20");
+	        		
+		        	StringBuilder sbURL = new StringBuilder();        	
+		        	sbURL.append("http://maps.google.com/maps/api/geocode/json?address=");
+		        	sbURL.append(addr);
+		        	sbURL.append("&sensor=false");
+		        	
+		        	HttpGet httpGet = new HttpGet(sbURL.toString());
+		        	HttpClient client = new DefaultHttpClient();
+		        	HttpResponse response;
+		        	StringBuilder sbr = new StringBuilder();
+		        	
+		        	response = client.execute(httpGet);
+		        	HttpEntity entity = response.getEntity();
+		        	InputStream stream = entity.getContent();
+		        	int b;
+		        	while ((b = stream.read())!=-1) {
+						sbr.append((char) b);				
+					}
+		        	
+		        	JSONObject jsonObject = new JSONObject(sbr.toString());
+		        	
+		        	float lon = (float) ((JSONArray)jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+		        	float lat = (float) ((JSONArray)jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+		        	
+		            // Display the current location in the UI
+		           return (""+ lat + ", " +lon);	
+	             
+
+	             // Catch network or other I/O problems.
+	            } catch (Exception exception) {
+
+	                    // Log an error and return an error message
+	                    Log.e(LocationUtils.APPTAG, exception.getMessage());
+
+	                    // print the stack trace
+	                    exception.printStackTrace();
+
+	                    // Return an error message
+	                    return (exception.getMessage());
+
+	               
+	             } 
+	                
+	        }
+	        /**
+	         * A method that's called once doInBackground() completes. Set the text of the
+	         * UI element that displays the address. This method runs on the UI thread.
+	         */
+	        @Override
+	        protected void onPostExecute(String latLng) {        
+	            
+	            // Set the address in the UI
+	            mLatLng.setText(latLng);
+	        }
+	    }
+    
+	    public void getIntentMap(View v) {
+
+	        // If Google Play Services is available
+	        if (servicesConnected()) {        	            
+	        	
+	        	String latlng = mLatLng.getText().toString();
+	        	String[] latlng_bloques = latlng.split(",");
+	        			
+	        	double latitude = Double.parseDouble(latlng_bloques[0]);
+	        	double longitude = Double.parseDouble(latlng_bloques[1]);        	
+	        	String label = "Location";
+	        	String uriBegin = "geo:" + latitude + "," + longitude;
+	        	String query = latitude + "," + longitude + "(" + label + ")";
+	        	String encodedQuery = Uri.encode(query);
+	        	String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+	        	Uri uri = Uri.parse(uriString);
+	        	Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+	        	startActivity(intent);
+	        	
+	            
+	        }
+	    }
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			  // Inflate the menu; this adds items to the action bar if it is present.
+			   getMenuInflater().inflate(R.menu.main, menu);		
+		
+				// Locate MenuItem with ShareActionProvider
+			    MenuItem item = menu.findItem(R.id.menu_item_share);
+	 
+	            // Fetch and store ShareActionProvider
+			    mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+		        
+			return true;
+		}
+		 @Override
+		public boolean onOptionsItemSelected(MenuItem item) {	
+			 /*TODO> Aqui!
+	    	switch (item.getItemId()) {
+	    	case R.id.action_settings:
+				Intent intent = new Intent(this, Preferences.class);
+				startActivity(intent);
+				return true;		
+
+			default:
+				// TODO Auto-generated method stub
+				return super.onOptionsItemSelected(item);
+			}
+			*/
+		}
+		    
+	    public void setShareIntent(String addrees) {
+	        if (mShareActionProvider != null) {
+	        	 Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+	 		            .setType("text/plain").setText(addrees).getIntent();
+	 		     
+	            mShareActionProvider.setShareIntent(shareIntent);
+	        }
+	    }
+
+	    private void startXML() {   	
+	    	      	
+	    	   try {    	
+	    	      fout = openFileOutput("location.xml", MODE_PRIVATE);    	
+	    	   } catch (FileNotFoundException e) {    	
+	    	      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+	    	   }
+
+	    	   serializer = Xml.newSerializer();
+	    	
+	    	   try {
+	    	
+	    	      serializer.setOutput(fout, "UTF-8");    	
+	    	      serializer.startDocument(null, true);    	
+	    	      serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+	   	
+	    	   } catch (Exception e) {    
+	    	      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+	    	   }
+	    	
+	    	}
+	    private void updatesXML() {
+	    	
+	    	if(!startXML){
+	    		startXML = true;
+	    		startXML();
+	    	}
+	    	// Get the current location
+	        Location currentLocation = mLocationClient.getLastLocation();
+	        
+	        String locationSave = LocationUtils.getLatLng(this, currentLocation);
+	        try {
+	        	serializer.startTag(null, "location");       	
+	    	
+	        	serializer.text(locationSave);    
+		      
+	        	serializer.endTag(null, "location"); 
+	        } catch (Exception e) {    
+	        	e.printStackTrace();
+	        }	
+	    }
+	    
+	    private void finXML() {
+	    	startXML = false;
+	    	try {     
+	  	      serializer.endDocument();    	
+	  	      serializer.flush();    	
+	  	      fout.close();  	
+	  	     	    	
+	  	   } catch (Exception e) {    
+	       	e.printStackTrace();
+	  	   }
+	    }
+
+	    public void saveXml(View v) {
+	    	saveXML = true;
+	    }
+	    
+	    public void notSaveXml(View v) {
+	    	saveXML = false;
+	    }
+
+	    public void openContact(View v) {
+	    	contacts.selectContact();
+	    }
 }
