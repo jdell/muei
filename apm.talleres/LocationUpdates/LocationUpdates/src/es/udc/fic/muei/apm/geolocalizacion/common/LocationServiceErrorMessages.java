@@ -17,10 +17,11 @@
 package es.udc.fic.muei.apm.geolocalizacion.common;
 
 import com.google.android.gms.common.ConnectionResult;
+
+import es.udc.fic.muei.apm.geolocalizacion.R;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.example.android.location.R;
 
 /**
  * Map error codes to error messages.

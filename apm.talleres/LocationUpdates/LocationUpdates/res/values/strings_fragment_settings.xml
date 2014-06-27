@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_location_method_title">Geolocation method</string>
+    <string name="settings_location_method_select">Select a method</string>
+    <string name="settings_location_method_summary">Reverse geolocation method</string>
+    
+    
+    <string name="settings_log_title">Save XML</string>
+    <string name="settings_log_on_title">Yes</string>
+    <string name="settings_log_on_summary">Save location data in a XML file</string>
+    <string name="settings_log_off_title">No</string>
+    <string name="settings_log_off_summary">Do not save location data</string>
+
+    <!-- Strings related to Settings -->
+    
+    <string-array name="listOfMethodsValues">
+        <item>geo</item>
+        <item>http</item>
+    </string-array>	
+    
+    <string-array name="listOfMethodsEntries">
+        <item>Geocoder</item>
+        <item>Http</item>
+    </string-array>	
+
+</resources>

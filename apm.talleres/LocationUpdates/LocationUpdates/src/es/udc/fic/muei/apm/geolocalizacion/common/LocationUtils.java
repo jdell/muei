@@ -16,10 +16,10 @@
 
 package es.udc.fic.muei.apm.geolocalizacion.common;
 
+import es.udc.fic.muei.apm.geolocalizacion.R;
 import android.content.Context;
 import android.location.Location;
 
-import com.example.android.location.R;
 
 /**
  * Defines app-wide constants and utilities

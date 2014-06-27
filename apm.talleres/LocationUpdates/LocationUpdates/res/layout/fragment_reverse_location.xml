@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"  >
+    
+	<TableLayout
+	    android:id="@+id/main_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp"
+	    >
+	
+	    <TableRow>
+	    	<TextView
+	        android:id="@+id/text_connection_status"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"      
+	        android:text="@string/unknown"
+	        android:textIsSelectable="true"       
+	         />
+	
+	    <TextView
+	        android:id="@+id/text_connection_state"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"       
+	        android:text="@string/unknown"
+	        android:textIsSelectable="true"
+	        android:layout_marginLeft="10dp"/>
+	        
+	    </TableRow>
+	    
+	    
+		<TableRow>
+		     <Button
+	        android:id="@+id/start_updates"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"        
+	        android:onClick="startUpdates"
+	         android:layout_marginTop="10dp"
+	        android:text="@string/start_updates" />
+	
+	    <Button
+	        android:id="@+id/stop_updates"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	         android:layout_marginTop="10dp"
+	        android:layout_marginLeft="10dp" 
+	        android:onClick="stopUpdates"
+	        android:text="@string/stop_updates" />
+		    
+		</TableRow>
+    </TableLayout>
+
+        <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="@string/latlng"/>
+
+    <Button
+        android:id="@+id/btnGetAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/get_address" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/address"
+         android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="" />
+
+    <Button
+        android:id="@+id/btnViewMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_map" 
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

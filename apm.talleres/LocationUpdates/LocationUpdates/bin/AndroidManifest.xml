@@ -17,39 +17,52 @@
  */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.location"
+    package="es.udc.fic.muei.apm.geolocalizacion"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+ <!-- @drawable/ic_action_map -->
     <application
         android:allowBackup="true"
+        android:description="@string/app_description"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:description="@string/app_description"
         android:theme="@style/AppTheme" >
+
+        <service
+            android:name="es.udc.fic.muei.apm.geolocalizacion.ReceiveUpdatesIntentService"
+            android:exported="false"
+            android:label="@string/app_name" >
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
-            android:name="es.udc.fic.muei.apm.geolocalizacion.MainActivity"
-            android:label="@string/app_name">
+            android:name="es.udc.fic.muei.apm.geolocalizacion.LocationMainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name="es.udc.fic.muei.apm.geolocalizacion.ReceiveUpdatesIntentService"
-            android:label="@string/app_name"
-            android:exported="false"></service>
-        
-        <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
+        <activity
+            android:name="es.udc.fic.muei.apm.geolocalizacion.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="es.udc.fic.muei.apm.geolocalizacion.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

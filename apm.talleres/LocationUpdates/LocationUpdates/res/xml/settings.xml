@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ListPreference android:entryValues="@array/listOfMethodsValues" android:entries="@array/listOfMethodsEntries" android:dialogTitle="@string/settings_location_method_title" android:title="@string/settings_location_method_select" android:summary="@string/settings_location_method_summary" android:key="settings_location_method_select"/>
+    <SwitchPreference android:switchTextOn="@string/settings_log_on_title" android:switchTextOff="@string/settings_log_off_title" android:summaryOn="@string/settings_log_on_summary" android:summaryOff="@string/settings_log_off_summary" android:title="@string/settings_log_title" android:key="settings_log_title"/>
+    
+
+</PreferenceScreen>
