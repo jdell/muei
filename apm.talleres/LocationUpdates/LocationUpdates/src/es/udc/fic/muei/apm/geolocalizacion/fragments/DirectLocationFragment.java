@@ -30,26 +30,25 @@ import android.widget.Toast;
 
 
 public class DirectLocationFragment extends Fragment {
+    
+    private Activity activity;
+    
     // Handles to UI widgets
     private TextView txtLatLng;
     private EditText txtAddress;
     private Button btnGetLatLng;
     private Button btnViewMap;
     
-    private Activity activity;
-    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
+   	 	 activity = this.getActivity();
+	 
     	 View rootView = inflater.inflate(R.layout.fragment_direct_location, container, false);
-         
-    	 activity = this.getActivity();
-    	 
     	 txtLatLng = (TextView)rootView.findViewById(R.id.txtLatLng);
     	 txtAddress = (EditText)rootView.findViewById(R.id.txtAddress);
     	 btnGetLatLng = (Button)rootView.findViewById(R.id.btnGetLatLng);
-    	 btnGetLatLng.setOnClickListener(new View.OnClickListener() {
-			
+    	 btnGetLatLng.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 		    	String address = txtAddress.getText().toString();      

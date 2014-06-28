@@ -207,7 +207,7 @@ public class LocationMainActivity extends FragmentActivity implements
      *
      * @return true if Google Play services is available, otherwise false
      */
-    private boolean servicesConnected() {
+    public boolean servicesConnected() {
 
         // Check that Google Play services is available
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -272,4 +272,33 @@ public class LocationMainActivity extends FragmentActivity implements
             return mDialog;
         }
     }
+
+    /**
+     * Show a dialog returned by Google Play services for the
+     * connection error code
+     *
+     * @param errorCode An error code returned from onConnectionFailed
+     */
+    public void showErrorDialog(int errorCode) {
+
+        // Get the error dialog from Google Play services
+        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
+            errorCode,
+            this,
+            LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+        // If Google Play services can provide an error dialog
+        if (errorDialog != null) {
+
+            // Create a new DialogFragment in which to show the error dialog
+            ErrorDialogFragment errorFragment = new ErrorDialogFragment();
+
+            // Set the dialog in the DialogFragment
+            errorFragment.setDialog(errorDialog);
+
+            // Show the error dialog in the DialogFragment
+            errorFragment.show(getSupportFragmentManager(), LocationUtils.APPTAG);
+        }
+    }
+
 }

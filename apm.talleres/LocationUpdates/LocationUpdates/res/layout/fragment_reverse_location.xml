@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"  >
+    android:orientation="vertical"
+     >
     
 	<TableLayout
 	    android:id="@+id/main_layout"
@@ -36,8 +37,7 @@
 		     <Button
 	        android:id="@+id/start_updates"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"        
-	        android:onClick="startUpdates"
+	        android:layout_height="wrap_content"  
 	         android:layout_marginTop="10dp"
 	        android:text="@string/start_updates" />
 	
@@ -47,14 +47,13 @@
 	        android:layout_height="wrap_content"
 	         android:layout_marginTop="10dp"
 	        android:layout_marginLeft="10dp" 
-	        android:onClick="stopUpdates"
 	        android:text="@string/stop_updates" />
 		    
 		</TableRow>
     </TableLayout>
 
         <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtLatLng"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -65,6 +64,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/get_address" />
+
+    <ProgressBar
+        android:id="@+id/address_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView1"

@@ -79,10 +79,11 @@ public final class LocationUtils {
         if (currentLocation != null) {
 
             // Return the latitude and longitude as strings
-            return context.getString(
-                    R.string.latitude_longitude,
-                    currentLocation.getLatitude(),
-                    currentLocation.getLongitude());
+//            return context.getString(
+//                    R.string.latitude_longitude,
+//                    currentLocation.getLatitude(),
+//                    currentLocation.getLongitude());
+        	return (""+ currentLocation.getLatitude() + ", " +currentLocation.getLongitude());
         } else {
 
             // Otherwise, return the empty string
