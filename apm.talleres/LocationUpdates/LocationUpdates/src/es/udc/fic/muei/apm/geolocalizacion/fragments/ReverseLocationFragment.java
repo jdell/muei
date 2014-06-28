@@ -110,36 +110,42 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 			@Override
 			public void onClick(View v) {
 
-	    		// If Google Play Services is available
-	            if (((LocationMainActivity)activity).servicesConnected()) {
-	            	String method = mPrefs.getString("settings_location_method_title","geo");
-
-			    	if (method.equals("http")){
-		            	// Turn the indefinite activity indicator on
-		                mActivityIndicator.setVisibility(View.VISIBLE);
-
-		            	 // Get the current location
-		                Location currentLocation = mLocationClient.getLastLocation();
-		                
-		            	 // Start the background task
-		                (new GetAddressAlternativeTask(activity)).execute(currentLocation);
-			    	}else{
-			    		 // In Gingerbread and later, use Geocoder.isPresent() to see if a geocoder is available.
-			            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && !Geocoder.isPresent()) {
-			                // No geocoder is present. Issue an error message
-			                Toast.makeText(activity, R.string.no_geocoder_available, Toast.LENGTH_LONG).show();
-			                return;
-			            }
-		                // Get the current location
-		                Location currentLocation = mLocationClient.getLastLocation();
-
-		                // Turn the indefinite activity indicator on
-		                mActivityIndicator.setVisibility(View.VISIBLE);
-
-		                // Start the background task
-		                (new GetAddressTask(activity)).execute(currentLocation);
-			    	}	
-	            }	  
+		    	String latLng = txtLatLng.getText().toString();      
+		        if (latLng!=null && latLng.length()>0){
+		    		// If Google Play Services is available
+		            if (((LocationMainActivity)activity).servicesConnected()) {
+		            	String method = mPrefs.getString("settings_location_method_select","geo");
+	
+				    	if (method.equals("http")){
+			            	// Turn the indefinite activity indicator on
+			                mActivityIndicator.setVisibility(View.VISIBLE);
+	
+			            	 // Get the current location
+			                Location currentLocation = mLocationClient.getLastLocation();
+			                
+			            	 // Start the background task
+			                (new GetAddressAlternativeTask(activity)).execute(currentLocation);
+				    	}else{
+				    		 // In Gingerbread and later, use Geocoder.isPresent() to see if a geocoder is available.
+				            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && !Geocoder.isPresent()) {
+				                // No geocoder is present. Issue an error message
+				                Toast.makeText(activity, R.string.no_geocoder_available, Toast.LENGTH_LONG).show();
+				                return;
+				            }
+			                // Get the current location
+			                Location currentLocation = mLocationClient.getLastLocation();
+	
+			                // Turn the indefinite activity indicator on
+			                mActivityIndicator.setVisibility(View.VISIBLE);
+	
+			                // Start the background task
+			                (new GetAddressTask(activity)).execute(currentLocation);
+				    	}	
+		            }	  
+	        	
+		        }else{
+			          Toast.makeText(activity, "No lat/lng specified", Toast.LENGTH_SHORT).show();
+		        }	
 			}
 		});
     	 btnViewMap = (Button)rootView.findViewById(R.id.btnViewMap);
@@ -296,9 +302,9 @@ GooglePlayServicesClient.OnConnectionFailedListener{
         txtConnectionStatus.setText(R.string.location_updated);
 
         // In the UI, set the latitude and longitude to the value received
-        String latLng = LocationUtils.getLatLng(this.activity, location);
-        txtLatLng.setText(latLng);
+        txtLatLng.setText(LocationUtils.getLatLng(this.activity, location));
         
+        saveXML = mPrefs.getBoolean("settings_log_title",false);
         if(saveXML){
         	updatesXML();
         }

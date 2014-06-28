@@ -96,9 +96,10 @@ public class LocationMainActivity extends FragmentActivity implements
 
 		// Locate MenuItem with ShareActionProvider
 	    MenuItem item = menu.findItem(R.id.menu_item_share);
-
+	    
         // Fetch and store ShareActionProvider
 	    mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        mShareActionProvider.setShareIntent(null);
 	    
 		return true;
 	}
@@ -125,10 +126,10 @@ public class LocationMainActivity extends FragmentActivity implements
 	   
 	}
 
-    public void setShareIntent(String addrees) {
+    public void setShareIntent(String address) {
         if (mShareActionProvider != null) {
         	 Intent shareIntent = ShareCompat.IntentBuilder.from(this)
- 		            .setType("text/plain").setText(addrees).getIntent();
+ 		            .setType("text/plain").setText(address).getIntent();
  		     
             mShareActionProvider.setShareIntent(shareIntent);
         }

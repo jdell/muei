@@ -212,6 +212,7 @@ public class ContactLocationFragment extends Fragment{
         protected void onPostExecute(String latLng) {
             // Set the address in the UI
             txtLatLng.setText(latLng);
+            ((LocationMainActivity)activity).setShareIntent(txtAddress.getText().toString());
         }
     }
 }
