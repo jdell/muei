@@ -9,6 +9,8 @@
         android:id="@+id/btnOpenContact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#1ea2e1"       
+        android:textColor="#fff"
         android:text="@string/open_contact" />
     
     <TextView
@@ -28,6 +30,8 @@
         android:id="@+id/btnGetLatLng"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#1ea2e1"       
+        android:textColor="#fff"
         android:text="@string/get_location" />
 
     <TextView
@@ -47,6 +51,8 @@
         android:id="@+id/btnViewMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#1ea2e1"       
+        android:textColor="#fff"
         android:text="@string/view_map" android:layout_marginTop="10dp"/>
 
 
